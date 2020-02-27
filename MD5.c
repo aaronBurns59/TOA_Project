@@ -13,7 +13,6 @@
 #define C =0x98badcfe
 #define D =0x10325476
 
-
 // MD5 Rotation Constants
 // The values in K will be used in each step of the MD5 Algorithm
 const uint32_t K[64] ={    
@@ -63,8 +62,8 @@ uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
 
 // Bit shifting function
 // Takes in a word (w) and left rotate its bits by the amount given (s)
-uint32_t ROTL(uint32_t w, int s){
-    return (w << s | w >> (32-s));
+static uint32_t ROTL(uint32_t w, int s){
+    return ((w << s) | (w >> (32-s)));
 }
 
 int main(int argc, char *argv)
