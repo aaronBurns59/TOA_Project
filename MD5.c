@@ -6,6 +6,14 @@
 // used for specifying the exact size of the integers in terms of bits
 #include <inttypes.h>
 
+// Four "Words"(32-bit) initialized  in low order hexidecimal
+// These are usd in each round of the MD5 operation
+#define A =0x67452301
+#define B =0xefcdab89
+#define C =0x98badcfe
+#define D =0x10325476
+
+
 // MD5 Rotation Constants
 // The values in K will be used in each step of the MD5 Algorithm
 const uint32_t K[64] ={    
@@ -23,10 +31,15 @@ const uint32_t K[64] ={
 };
 
 // Bit shift amounts for each round of operations
+// The values of s will be used in every round
 const int s[4][4]= {
+    // Shift amounts for Round 1
     {7,12,17,22},
+    // Shift amounts for Round 2
     {5,9,14,20},
+    // Shift amounts for Round 3
     {4,11,16,23},
+    // Shift amounts for Round 4
     {6,10,15,21}
 };
 
@@ -48,7 +61,14 @@ uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
     return (y ^ (x | ~z));
 }// I // Auxillary Function
 
+// Bit shifting function
+// Takes in a word (w) and left rotate its bits by the amount given (s)
+uint32_t ROTL(uint32_t w, int s){
+    return (w << s | w >> (32-s));
+}
+
 int main(int argc, char *argv)
 {
+    printf("%d\n", ROTL(23, 1));
     return 0;
 }// main
