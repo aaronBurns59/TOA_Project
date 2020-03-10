@@ -42,6 +42,10 @@ const int s[4][4]= {
     {6,10,15,21}
 };
 
+union MessageBlock{
+    uint32_t word[16];
+};
+
 // Auxillary Functions used in the MD5 Algorithm
 // Logical Operators ~ : NOT, ^ : XOR, & : AND, | : OR
 uint32_t AuxF(uint32_t x, uint32_t y, uint32_t z){
