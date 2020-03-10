@@ -66,6 +66,19 @@ static uint32_t ROTL(uint32_t w, int s){
     return ((w << s) | (w >> (32-s)));
 }
 
+// numbits is the number of bits retrieved from the file read in 
+// The final output of this function needs to be a multiple of 512 bits 
+uint32_t NumberOf_0_Bytes(uint64_t numbits){
+    // ULL: Unsigned Long Long Integer (it makes c save var as a 64 bit integer)
+    uint64_t result = 512ULL - (numbits % 512ULL);
+    // find out if there is enough room in the last block to do the padding or will a new block be needed
+    if(result < 65)// 65 because it is the lenght of the integer and the 1
+        result += 512;
+    // get the number of 0 bytes needed to pad between the 1 and the 64 bit integer printed at the end
+    result -= 72;
+    return(result/8ULL);
+}
+
 int main(int argc, char *argv)
 {
     printf("%d\n", ROTL(23, 1));
