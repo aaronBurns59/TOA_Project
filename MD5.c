@@ -92,7 +92,7 @@ static uint32_t ROTL(uint32_t w, int s){
 // si, sj are for accesing the elements of the s 2d array which are used in each round
 // ^^ might be able to pass these easier it is only a 4*4 2d array
 // k is the 64 constants declared above
-static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
     int shiftAmount;
     // getting the element of the 2d array of s
     // this is used in each round of operations 
@@ -102,43 +102,43 @@ static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si,
         // printf("Accessing s elemetents: %d\n", shiftAmount);
     }// for
     printf("%d\n", shiftAmount);
-    a += AuxF(b,c,d) + x + k;
+    a += AuxF(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
     return a += b;
 }// F // Round 1, first 16 operations
 
-static uint32_t G(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+static uint32_t G(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
     int shiftAmount;
     for(int i = 0; i <= si; i++)
     {
         shiftAmount = s[1][si];
     }// for
     printf("%d\n", shiftAmount);
-    a += AuxG(b,c,d) + x + k;
+    a += AuxG(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
     a += b;
 }// G // Round 2, second 16 operations
 
-static uint32_t H(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+static uint32_t H(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
     int shiftAmount;
     for(int i = 0; i <= si; i++)
     {
         shiftAmount = s[2][si];
     }// for
     printf("%d\n", shiftAmount);
-    a += AuxH(b,c,d) + x + k;
+    a += AuxH(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
     a += b;
 }// H // Round 3, third 16 operations
 
-static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
     int shiftAmount;
     for(int i = 0; i <= si; i++)
     {
         shiftAmount = s[3][si];
     }// for
     printf("%d\n", shiftAmount);
-    a += AuxI(b,c,d) + x + k;
+    a += AuxI(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
     a += b;
 }// I // Round 4, fourth 16 operations
@@ -203,9 +203,9 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
     return 1;   
 }
 
-uint32_t hashMD5(BLOCK M){
+uint32_t hashMD5(BLOCK *M){
     // =====Round 1======Operation
-    F(A,B,C,D,&M->threeTwo.hash[0],0,K[0]); // 1
+    F(A,B,C,D,M->threeTwo[0],0,K[0]); // 1
 }
 
 int main(int argc, char *argv[]){
