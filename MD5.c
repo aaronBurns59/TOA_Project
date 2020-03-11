@@ -3,7 +3,6 @@
 
 // standard c library
 #include <stdio.h>
-// 
 #include <stdint.h>
 // used for specifying the exact size of the integers in terms of bits
 #include <inttypes.h>
@@ -90,12 +89,48 @@ static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si,
     {
         shiftAmount = s[0][i];
         // printf("Accessing s elemetents: %d\n", shiftAmount);
-    }// outer for
+    }// for
     printf("%d\n", shiftAmount);
     a += AuxF(b,c,d) + x + k;
     a = ROTL(a, shiftAmount);
     return a += b;
-}
+}// F // Round 1, first 16 operations
+
+static uint32_t G(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+    int shiftAmount;
+    for(int i = 0; i <= si; i++)
+    {
+        shiftAmount = s[1][si];
+    }// for
+    printf("%d\n", shiftAmount);
+    a += AuxG(b,c,d) + x + k;
+    a = ROTL(a, shiftAmount);
+    a += b;
+}// G // Round 2, second 16 operations
+
+static uint32_t H(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+    int shiftAmount;
+    for(int i = 0; i <= si; i++)
+    {
+        shiftAmount = s[2][si];
+    }// for
+    printf("%d\n", shiftAmount);
+    a += AuxH(b,c,d) + x + k;
+    a = ROTL(a, shiftAmount);
+    a += b;
+}// H // Round 3, third 16 operations
+
+static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+    int shiftAmount;
+    for(int i = 0; i <= si; i++)
+    {
+        shiftAmount = s[3][si];
+    }// for
+    printf("%d\n", shiftAmount);
+    a += AuxI(b,c,d) + x + k;
+    a = ROTL(a, shiftAmount);
+    a += b;
+}// I // Round 4, fourth 16 operations
 
 // numbits is the number of bits retrieved from the file read in 
 // The final output of this function needs to be a multiple of 512 bits 
@@ -109,7 +144,6 @@ uint32_t NumberOf_0_Bytes(uint64_t numbits){
     result -= 72;
     return(result/8ULL);
 }
-
 
 int main(int argc, char *argv[]){
     // Check if the program has recieved any file as input
@@ -127,7 +161,17 @@ int main(int argc, char *argv[]){
 
     int x=1;
 
-    F(A,B,C,D,x,3,K[0]);
+    // Round 1 
+    F(A,B,C,D,x,0,K[0]);// Operation 1
+
+    // Round 2 
+    G(A,B,C,D,x,0,K[0]);// Operation 17
+
+    // Round 3
+    H(A,B,C,D,x,0,K[0]);// Operation 33
+
+    // Round 4
+    I(A,B,C,D,x,0,K[0]);// Operation 49
 
     fclose(infile);
 
