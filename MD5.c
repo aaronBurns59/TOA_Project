@@ -10,10 +10,10 @@
 
 // Four "Words"(32-bit) initialized  in low order hexidecimal
 // These are usd in each round of the MD5 operation
-#define A =0x67452301
-#define B =0xefcdab89
-#define C =0x98badcfe
-#define D =0x10325476
+#define A 0x67452301
+#define B 0xefcdab89
+#define C 0x98badcfe
+#define D 0x10325476
 
 // MD5 Rotation Constants
 // The values in K will be used in each step of the MD5 Algorithm
@@ -76,6 +76,26 @@ static uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
 static uint32_t ROTL(uint32_t w, int s){
     return ((w << s) | (w >> (32-s)));
 }
+// What the params do:
+// a,b,c,d are the 4 16 bit words
+// x is somthing random I don't know need to find out
+// si, sj are for accesing the elements of the s 2d array which are used in each round
+// ^^ might be able to pass these easier it is only a 4*4 2d array
+// k is the 64 constants declared above
+static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si, uint32_t k){
+    int shiftAmount;
+    // getting the element of the 2d array of s
+    // this is used in each round of operations 
+    for(int i = 0; i <= si; i++)
+    {
+        shiftAmount = s[0][i];
+        // printf("Accessing s elemetents: %d\n", shiftAmount);
+    }// outer for
+    printf("%d\n", shiftAmount);
+    a += AuxF(b,c,d) + x + k;
+    a = ROTL(a, shiftAmount);
+    return a += b;
+}
 
 // numbits is the number of bits retrieved from the file read in 
 // The final output of this function needs to be a multiple of 512 bits 
@@ -90,8 +110,8 @@ uint32_t NumberOf_0_Bytes(uint64_t numbits){
     return(result/8ULL);
 }
 
-int main(int argc, char *argv[])
-{
+
+int main(int argc, char *argv[]){
     // Check if the program has recieved any file as input
     if(argc != 2){
         printf("Error: Expecting single file name as an argument\n");
@@ -104,6 +124,10 @@ int main(int argc, char *argv[])
         printf("Error: Could not open file %s\n", argv[1]);
         return 1;
     }
+
+    int x=1;
+
+    F(A,B,C,D,x,3,K[0]);
 
     fclose(infile);
 
