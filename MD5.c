@@ -48,9 +48,12 @@ const int s[4][4]= {
     {6,10,15,21}
 };
 
-union MessageBlock{
-    uint32_t M[16];
-};
+// 64 bytes of memeory that can be accessed in different types
+union{
+    uint8_t eight[64];
+    uint32_t sixFour[8];
+    uint64_t threeTwo[16];
+} BLOCK;
 
 // Auxillary Functions used in the MD5 Algorithm
 // Logical Operators ~ : NOT, ^ : XOR, & : AND, | : OR
@@ -158,20 +161,6 @@ int main(int argc, char *argv[]){
         printf("Error: Could not open file %s\n", argv[1]);
         return 1;
     }
-
-    int x=1;
-
-    // Round 1 
-    F(A,B,C,D,x,0,K[0]);// Operation 1
-
-    // Round 2 
-    G(A,B,C,D,x,0,K[0]);// Operation 17
-
-    // Round 3
-    H(A,B,C,D,x,0,K[0]);// Operation 33
-
-    // Round 4
-    I(A,B,C,D,x,0,K[0]);// Operation 49
 
     fclose(infile);
 
