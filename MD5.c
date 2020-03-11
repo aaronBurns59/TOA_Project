@@ -3,6 +3,8 @@
 
 // standard c library
 #include <stdio.h>
+// 
+#include <stdint.h>
 // used for specifying the exact size of the integers in terms of bits
 #include <inttypes.h>
 
@@ -15,6 +17,11 @@
 
 // MD5 Rotation Constants
 // The values in K will be used in each step of the MD5 Algorithm
+
+/***How to get the Constants in K[i]
+    for (i = 0; i <= 64)
+        K[i] = floor(2^32 * abs(sin(i+1)))
+****/
 const uint32_t K[64] ={    
         0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a,
         0xa8304613, 0xfd469501, 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -43,24 +50,24 @@ const int s[4][4]= {
 };
 
 union MessageBlock{
-    uint32_t word[16];
+    uint32_t M[16];
 };
 
 // Auxillary Functions used in the MD5 Algorithm
 // Logical Operators ~ : NOT, ^ : XOR, & : AND, | : OR
-uint32_t AuxF(uint32_t x, uint32_t y, uint32_t z){
+static uint32_t AuxF(uint32_t x, uint32_t y, uint32_t z){
     return ((x & y) | (~x & z));
 }// F // Auxillary Function
 
-uint32_t AuxG(uint32_t x, uint32_t y, uint32_t z){
+static uint32_t AuxG(uint32_t x, uint32_t y, uint32_t z){
     return ((x & z) | (y & ~z));
 }// G // Auxillary Function
 
-uint32_t AuxH(uint32_t x, uint32_t y, uint32_t z){
+static uint32_t AuxH(uint32_t x, uint32_t y, uint32_t z){
     return (x ^ y ^ z);
 }// H // Auxillary Function
 
-uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
+static uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
     return (y ^ (x | ~z));
 }// I // Auxillary Function
 
@@ -83,8 +90,22 @@ uint32_t NumberOf_0_Bytes(uint64_t numbits){
     return(result/8ULL);
 }
 
-int main(int argc, char *argv)
+int main(int argc, char *argv[])
 {
-    printf("%d\n", ROTL(23, 1));
+    // Check if the program has recieved any file as input
+    if(argc != 2){
+        printf("Error: Expecting single file name as an argument\n");
+        return 1;
+    }
+
+    FILE *infile = fopen(argv[1], "rb");
+    
+    if(!infile){
+        printf("Error: Could not open file %s\n", argv[1]);
+        return 1;
+    }
+
+    fclose(infile);
+
     return 0;
 }// main
