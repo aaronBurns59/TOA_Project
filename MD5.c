@@ -203,8 +203,9 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
     return 1;   
 }
 
-void hashMD5(){
-
+uint32_t hashMD5(BLOCK M){
+    // =====Round 1======Operation
+    F(A,B,C,D,M,0,K[0]); // 1
 }
 
 int main(int argc, char *argv[]){
@@ -232,7 +233,7 @@ int main(int argc, char *argv[]){
     // it continues until there is nothing left to pad
     while(padding(&M, infile, &numbits, &status))
     {
-
+        // hashMd5(&M);
     }// while
 
     // Closing file
