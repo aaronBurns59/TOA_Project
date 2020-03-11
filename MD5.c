@@ -6,6 +6,8 @@
 #include <stdint.h>
 // used for specifying the exact size of the integers in terms of bits
 #include <inttypes.h>
+// used for handling the endian of the bytes
+#include <endian.h>
 
 // Four "Words"(32-bit) initialized  in low order hexidecimal
 // These are usd in each round of the MD5 operation
@@ -49,16 +51,16 @@ const int s[4][4]= {
 };
 
 // 64 bytes of memeory that can be accessed in different types
-union{
+typedef union{
     uint8_t eight[64];
     uint32_t sixFour[8];
     uint64_t threeTwo[16];
 } BLOCK;
 
-enum{ 
+typedef enum{ 
     READ,
     PAD0,
-    Finish
+    FINISH
 }PADDING;
 
 // Auxillary Functions used in the MD5 Algorithm
@@ -85,7 +87,7 @@ static uint32_t ROTL(uint32_t w, int s){
     return ((w << s) | (w >> (32-s)));
 }
 // What the params do:
-// a,b,c,d are the 4 16 bit words
+// 1. a,b,c,d are the 4 16 bit words
 // x is somthing random I don't know need to find out
 // si, sj are for accesing the elements of the s 2d array which are used in each round
 // ^^ might be able to pass these easier it is only a 4*4 2d array
@@ -141,35 +143,99 @@ static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, int x, int si,
     a += b;
 }// I // Round 4, fourth 16 operations
 
-void 
-/* REfactoring padding delete this if it works
-    // numbits is the number of bits retrieved from the file read in 
-    // The final output of this function needs to be a multiple of 512 bits 
-    uint32_t NumberOf_0_Bytes(uint64_t numbits){
-        // ULL: Unsigned Long Long Integer (it makes c save var as a 64 bit integer)
-        uint64_t result = 512ULL - (numbits % 512ULL);
-        // find out if there is enough room in the last block to do the padding or will a new block be needed
-        if(result < 65)// 65 because it is the lenght of the integer and the 1
-            result += 512;
-        // get the number of 0 bytes needed to pad between the 1 and the 64 bit integer printed at the end
-        result -= 72;
-        return(result/8ULL);
-    }
-*/
+// This function is taken from the SHA256 algorithm as it and MD5 share the exact same padding method
+// Section 5.1.1 in the Secure Hash Algorithm Standard
+// What the parameters do:
+// *M is the 32 bit block of the message input
+// *infile: the file that will be padded into message
+// the number of bits in a message so the padding knows what to add
+// enum element to show the status of padding
+// This funciton will process the input into the padded messages of the right size
+int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
+    // used for controlling multiple loops
+    int i;
+    // instantiate a variable for counting the number of bytes already read
+    size_t numOfBytesRead;
+
+    // Switch statement controlled using the enum elements
+    switch(*status){
+        case FINISH:
+        // no padding is needed if the status is finish
+            return 0;
+        case PAD0:
+            // We need to pad the message with ZEROS
+            // 56 is because of ???
+            for(i = 0; i< 56; i++){
+                // pad the message with the 0's needed 
+                M->eight[i] = 0X00;
+            }// for
+            M->sixFour[7]= htobe64(*numbits);
+            *status = FINISH;
+            break;
+        default:
+            // read 64 bytes from the file
+            numOfBytesRead = fread(M->eight, 1, 64, infile);
+            *numbits +=(8ULL * ((uint64_t) numOfBytesRead));
+
+            if (numOfBytesRead < 56){
+                // All padding can be done here including the 1 bit
+                // appending the 1 bit 0x80 = 1 byte
+                M->eight[numOfBytesRead] = 0x80;
+                // append the number of 0's needed to fit the message length
+                for(i = numOfBytesRead + 1; i < 56; i++){
+                    M->eight[i] = 0x00;
+                }// for
+                M->sixFour[7] = htobe64(*numbits);
+                *status = FINISH;
+            }// if
+            else if(numOfBytesRead < 64){
+                for(i = numOfBytesRead + 1; i < 64; i++){
+                    M->eight[i] = 0x00;
+                }// for
+                *status = PAD0;
+            }// else if
+    }// switch
+
+    for(i = 0; i < 16; i++){
+        M->threeTwo[i] = be32toh(M->threeTwo[i]);
+    }// for
+
+    return 1;   
+}
+
+void hashMD5(){
+
+}
+
 int main(int argc, char *argv[]){
     // Check if the program has recieved any file as input
     if(argc != 2){
         printf("Error: Expecting single file name as an argument\n");
         return 1;
-    }
+    }// if
 
+    // Opening file
     FILE *infile = fopen(argv[1], "rb");
     
+    // Check if the program has read in a file
     if(!infile){
         printf("Error: Could not open file %s\n", argv[1]);
         return 1;
-    }
+    }// if
 
+    // Current padded message block
+    BLOCK M;
+    uint64_t numbits = 0;
+    PADDING status = READ;
+
+    // this while loop pads the messages based on the input
+    // it continues until there is nothing left to pad
+    while(padding(&M, infile, &numbits, &status))
+    {
+
+    }// while
+
+    // Closing file
     fclose(infile);
 
     return 0;
