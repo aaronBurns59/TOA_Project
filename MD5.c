@@ -205,7 +205,7 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
 
 uint32_t hashMD5(BLOCK M){
     // =====Round 1======Operation
-    F(A,B,C,D,M,0,K[0]); // 1
+    F(A,B,C,D,&M->threeTwo.hash[0],0,K[0]); // 1
 }
 
 int main(int argc, char *argv[]){
