@@ -314,7 +314,7 @@ int main(int argc, char *argv[]){
         hashMD5(&M);
     }// while
 
-    printf("%02" PRIX32, hashMD5(&M));
+    printf("%02" PRIX32 "\n", hashMD5(&M));
 
     // Closing file
     fclose(infile);
