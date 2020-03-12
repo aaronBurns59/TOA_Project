@@ -212,15 +212,15 @@ uint32_t hashMD5(BLOCK *M){
     // that works
 
     // =====Round 1===================Operation
-    F(A,B,C,D,M->threeTwo[0],0,K[0]);   // 1
-    F(D,A,B,C,M->threeTwo[1],1,K[1]);   // 2
-    F(C,D,A,B,M->threeTwo[2],2,K[2]);   // 3
-    F(B,C,D,A,M->threeTwo[3],3,K[3]);   // 4
-    F(A,B,C,D,M->threeTwo[4],0,K[4]);   // 5
-    F(D,A,B,C,M->threeTwo[5],1,K[5]);   // 6
-    F(C,D,A,B,M->threeTwo[6],2,K[6]);   // 7
-    F(B,C,D,A,M->threeTwo[7],3,K[7]);   // 8
-    F(A,B,C,D,M->threeTwo[8],0,K[8]);   // 9
+    F(A,B,C,D,M->threeTwo[0],0,K[0]);   //  1
+    F(D,A,B,C,M->threeTwo[1],1,K[1]);   //  2
+    F(C,D,A,B,M->threeTwo[2],2,K[2]);   //  3
+    F(B,C,D,A,M->threeTwo[3],3,K[3]);   //  4
+    F(A,B,C,D,M->threeTwo[4],0,K[4]);   //  5
+    F(D,A,B,C,M->threeTwo[5],1,K[5]);   //  6
+    F(C,D,A,B,M->threeTwo[6],2,K[6]);   //  7
+    F(B,C,D,A,M->threeTwo[7],3,K[7]);   //  8
+    F(A,B,C,D,M->threeTwo[8],0,K[8]);   //  9
     F(D,A,B,C,M->threeTwo[9],1,K[9]);   // 10
     F(C,D,A,B,M->threeTwo[10],2,K[10]); // 11
     F(B,C,D,A,M->threeTwo[11],3,K[11]); // 12
@@ -245,6 +245,23 @@ uint32_t hashMD5(BLOCK *M){
     G(D,A,B,C,M->threeTwo[2],1,K[29]);  // 30
     G(C,D,A,B,M->threeTwo[7],2,K[30]);  // 31
     G(B,C,D,A,M->threeTwo[12],3,K[31]); // 32
+    // =====Round 3===================Operation
+    H(A,B,C,D,M->threeTwo[5],0,K[32]);  // 33
+    H(D,A,B,C,M->threeTwo[8],1,K[33]);  // 34
+    H(C,D,A,B,M->threeTwo[11],2,K[34]); // 35
+    H(C,D,A,B,M->threeTwo[14],3,K[35]); // 36
+    H(A,B,C,D,M->threeTwo[1],0,K[36]);  // 37
+    H(D,A,B,C,M->threeTwo[4],1,K[37]);  // 38
+    H(C,D,A,B,M->threeTwo[7],2,K[38]);  // 39
+    H(C,D,A,B,M->threeTwo[10],3,K[39]); // 40
+    H(A,B,C,D,M->threeTwo[13],0,K[32]); // 41
+    H(D,A,B,C,M->threeTwo[0],1,K[33]);  // 42
+    H(C,D,A,B,M->threeTwo[3],2,K[34]);  // 43
+    H(C,D,A,B,M->threeTwo[6],3,K[35]);  // 44
+    H(A,B,C,D,M->threeTwo[9],0,K[36]);  // 45
+    H(D,A,B,C,M->threeTwo[12],1,K[37]); // 46
+    H(C,D,A,B,M->threeTwo[15],2,K[38]); // 47
+    H(C,D,A,B,M->threeTwo[2],3,K[39]);  // 48
 }   
 
 int main(int argc, char *argv[]){
@@ -272,7 +289,7 @@ int main(int argc, char *argv[]){
     // it continues until there is nothing left to pad
     while(padding(&M, infile, &numbits, &status))
     {
-        // hashMd5(&M);
+        hashMD5(&M);
     }// while
 
     // Closing file
