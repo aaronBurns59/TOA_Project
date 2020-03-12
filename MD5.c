@@ -254,14 +254,32 @@ uint32_t hashMD5(BLOCK *M){
     H(D,A,B,C,M->threeTwo[4],1,K[37]);  // 38
     H(C,D,A,B,M->threeTwo[7],2,K[38]);  // 39
     H(C,D,A,B,M->threeTwo[10],3,K[39]); // 40
-    H(A,B,C,D,M->threeTwo[13],0,K[32]); // 41
-    H(D,A,B,C,M->threeTwo[0],1,K[33]);  // 42
-    H(C,D,A,B,M->threeTwo[3],2,K[34]);  // 43
-    H(C,D,A,B,M->threeTwo[6],3,K[35]);  // 44
-    H(A,B,C,D,M->threeTwo[9],0,K[36]);  // 45
-    H(D,A,B,C,M->threeTwo[12],1,K[37]); // 46
-    H(C,D,A,B,M->threeTwo[15],2,K[38]); // 47
-    H(C,D,A,B,M->threeTwo[2],3,K[39]);  // 48
+    H(A,B,C,D,M->threeTwo[13],0,K[40]); // 41
+    H(D,A,B,C,M->threeTwo[0],1,K[41]);  // 42
+    H(C,D,A,B,M->threeTwo[3],2,K[42]);  // 43
+    H(C,D,A,B,M->threeTwo[6],3,K[43]);  // 44
+    H(A,B,C,D,M->threeTwo[9],0,K[44]);  // 45
+    H(D,A,B,C,M->threeTwo[12],1,K[45]); // 46
+    H(C,D,A,B,M->threeTwo[15],2,K[46]); // 47
+    H(C,D,A,B,M->threeTwo[2],3,K[47]);  // 48
+    // =====Round 4===================Operation
+    I(A,B,C,D,M->threeTwo[0],0,K[48]);  // 49
+    I(D,A,B,C,M->threeTwo[7],1,K[49]);  // 50
+    I(C,D,A,B,M->threeTwo[14],2,K[50]); // 51
+    I(B,C,D,A,M->threeTwo[5],3,K[51]);  // 52
+    I(A,B,C,D,M->threeTwo[12],0,K[52]); // 53
+    I(D,A,B,C,M->threeTwo[3],1,K[53]);  // 54
+    I(C,D,A,B,M->threeTwo[10],2,K[54]); // 55
+    I(B,C,D,A,M->threeTwo[1],3,K[55]);  // 56
+    I(A,B,C,D,M->threeTwo[8],0,K[56]);  // 57
+    I(D,A,B,C,M->threeTwo[15],1,K[57]);  // 58
+    I(C,D,A,B,M->threeTwo[6],2,K[58]); // 59
+    I(B,C,D,A,M->threeTwo[13],3,K[59]);  // 60
+    I(A,B,C,D,M->threeTwo[4],0,K[60]); // 61
+    I(D,A,B,C,M->threeTwo[11],1,K[61]);  // 62
+    I(C,D,A,B,M->threeTwo[2],2,K[62]); // 63
+    I(B,C,D,A,M->threeTwo[9],3,K[63]);  // 64
+
 }   
 
 int main(int argc, char *argv[]){
