@@ -211,7 +211,7 @@ uint32_t hashMD5(BLOCK *M){
     // M and K is the select the shift amounts from the s[i][j] 2d array constant, see the method F,G,H or I to see how 
     // that works
 
-    // =====Round 1=================Operation
+    // =====Round 1===================Operation
     F(A,B,C,D,M->threeTwo[0],0,K[0]);   // 1
     F(D,A,B,C,M->threeTwo[1],1,K[1]);   // 2
     F(C,D,A,B,M->threeTwo[2],2,K[2]);   // 3
@@ -228,8 +228,24 @@ uint32_t hashMD5(BLOCK *M){
     F(D,A,B,C,M->threeTwo[13],1,K[13]); // 14
     F(C,D,A,B,M->threeTwo[14],2,K[14]); // 15
     F(B,C,D,A,M->threeTwo[15],3,K[15]); // 16
-    // =====Round 2=================Operation
-}
+    // =====Round 2===================Operation
+    G(A,B,C,D,M->threeTwo[1],0,K[16]);  // 17
+    G(D,A,B,C,M->threeTwo[6],1,K[17]);  // 18
+    G(C,D,A,B,M->threeTwo[11],2,K[18]); // 19
+    G(B,C,D,A,M->threeTwo[0],3,K[19]);  // 20
+    G(A,B,C,D,M->threeTwo[5],0,K[20]);  // 21
+    G(D,A,B,C,M->threeTwo[10],1,K[21]); // 22
+    G(C,D,A,B,M->threeTwo[15],2,K[22]); // 23
+    G(B,C,D,A,M->threeTwo[4],3,K[23]);  // 24
+    G(A,B,C,D,M->threeTwo[9],0,K[24]);  // 25
+    G(D,A,B,C,M->threeTwo[14],1,K[25]); // 26
+    G(C,D,A,B,M->threeTwo[3],2,K[26]);  // 27
+    G(B,C,D,A,M->threeTwo[8],3,K[27]);  // 28
+    G(A,B,C,D,M->threeTwo[13],0,K[28]); // 29
+    G(D,A,B,C,M->threeTwo[2],1,K[29]);  // 30
+    G(C,D,A,B,M->threeTwo[7],2,K[30]);  // 31
+    G(B,C,D,A,M->threeTwo[12],3,K[31]); // 32
+}   
 
 int main(int argc, char *argv[]){
     // Check if the program has recieved any file as input
