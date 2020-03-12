@@ -202,10 +202,33 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
 
     return 1;   
 }
-
+// This function will preform the MD5 hashing on the message
 uint32_t hashMD5(BLOCK *M){
-    // =====Round 1======Operation
-    F(A,B,C,D,M->threeTwo[0],0,K[0]); // 1
+
+    // Each round consists of 16 operations, there are 4 rounds and each round uses a different auxillary funciton
+    // Each operation uses a unique element of the K[i] constant, A,B,C,D are also costants that change their order 
+    // as parameters between each operation, M is the message that is going to be hashed. and the static values between
+    // M and K is the select the shift amounts from the s[i][j] 2d array constant, see the method F,G,H or I to see how 
+    // that works
+
+    // =====Round 1=================Operation
+    F(A,B,C,D,M->threeTwo[0],0,K[0]);   // 1
+    F(D,A,B,C,M->threeTwo[1],1,K[1]);   // 2
+    F(C,D,A,B,M->threeTwo[2],2,K[2]);   // 3
+    F(B,C,D,A,M->threeTwo[3],3,K[3]);   // 4
+    F(A,B,C,D,M->threeTwo[4],0,K[4]);   // 5
+    F(D,A,B,C,M->threeTwo[5],1,K[5]);   // 6
+    F(C,D,A,B,M->threeTwo[6],2,K[6]);   // 7
+    F(B,C,D,A,M->threeTwo[7],3,K[7]);   // 8
+    F(A,B,C,D,M->threeTwo[8],0,K[8]);   // 9
+    F(D,A,B,C,M->threeTwo[9],1,K[9]);   // 10
+    F(C,D,A,B,M->threeTwo[10],2,K[10]); // 11
+    F(B,C,D,A,M->threeTwo[11],3,K[11]); // 12
+    F(A,B,C,D,M->threeTwo[12],0,K[12]); // 13
+    F(D,A,B,C,M->threeTwo[13],1,K[13]); // 14
+    F(C,D,A,B,M->threeTwo[14],2,K[14]); // 15
+    F(B,C,D,A,M->threeTwo[15],3,K[15]); // 16
+    // =====Round 2=================Operation
 }
 
 int main(int argc, char *argv[]){
