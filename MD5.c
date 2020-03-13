@@ -50,7 +50,10 @@ const int s[4][4]= {
     {6,10,15,21}
 };
 
-// 64 bytes of memeory that can be accessed in different types
+// 64 bytes of memeory that can be accessed in different types:
+// 64 8-bit blocks
+// 8 64-bit blocks
+// 16 32-bit blocks
 // !!!Explain the names and their values!!!
 typedef union{
     uint8_t eight[64];
@@ -61,7 +64,6 @@ typedef union{
 typedef enum{ 
     READ,
     PAD0,
-    PAD1,
     FINISH
 }PADDING;
 
@@ -150,62 +152,10 @@ static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
 // enum element to show the status of padding
 // This funciton will process the input into the padded messages of the right size
 int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
-    // used for controlling multiple loops
-    int i;
-    // instantiate a variable for counting the number of bytes already read
-    size_t numOfBytesRead;
-
-    // Switch statement controlled using the enum elements
-    switch(*status){
-        case FINISH:
-        // no padding is needed if the status is finish
-            return 0;
-        case PAD1:
-        // add the 1-bit to the start of the message
-            M->eight[0] = 0x80; 
-            break;
-        case PAD0:
-            // We need to pad the message with ZEROS
-            // 56 is because of 64 - 8, the last 8 bytes of this message is needed for the nobits read in
-            for(i = 1; i< 56; i++){
-                // pad the message with the 0's needed 
-                M->eight[i] = 0X00;
-            }// for
-            M->sixFour[7]= htobe64(*numbits);
-            *status = FINISH;
-            break;
-        default:
-            // read 64 bytes from the file
-            numOfBytesRead = fread(M->eight, 1, 64, infile);
-            *numbits +=(8ULL * ((uint64_t) numOfBytesRead));
-
-            if (numOfBytesRead < 56){
-                // All padding can be done here including the 1 bit
-                // appending the 1 bit 0x80 = 1 byte
-                M->eight[numOfBytesRead] = 0x80;
-                // append the number of 0's needed to fit the message length
-                for(i = numOfBytesRead + 1; i < 56; i++){
-                    M->eight[i] = 0x00;
-                }// for
-                M->sixFour[7] = htobe64(*numbits);
-                *status = FINISH;
-            }// if
-            else if(numOfBytesRead < 64){
-                for(i = numOfBytesRead + 1; i < 64; i++){
-                    M->eight[i] = 0x00;
-                }// for
-                *status = PAD0;
-            }// else if
-    }// switch
-
-    for(i = 0; i < 16; i++){
-        M->threeTwo[i] = be32toh(M->threeTwo[i]);
-    }// for
-
-    return 1;   
+  
 }
 // This function will preform the MD5 hashing on the message
-uint32_t hashMD5(BLOCK *M){
+uint32_t hashMD5(BLOCK *M, uint32_t A, uint32_t B, uint32_t C, uint32_t D){
 
     // Each round consists of 16 operations, there are 4 rounds and each round uses a different auxillary funciton
     // Each operation uses a unique element of the K[i] constant, A,B,C,D are also costants that change their order 
@@ -213,7 +163,6 @@ uint32_t hashMD5(BLOCK *M){
     // M and K is the select the shift amounts from the s[i][j] 2d array constant, see the method F,G,H or I to see how 
     // that works
 
-    int A=WordA,B=WordB,C=WordC,D=WordD;
     int a = A, b = B, c = C, d = D;
 
     // =====Round 1===================Operation
@@ -313,14 +262,15 @@ int main(int argc, char *argv[]){
     uint64_t numbits = 0;
     PADDING status = READ;
 
+
     // this while loop pads the messages based on the input
     // it continues until there is nothing left to pad
     while(padding(&M, infile, &numbits, &status))
     {
-        hashMD5(&M);
+        hashMD5(&M, WordA, WordB, WordC, WordD);
     }// while
 
-    printf("%02" PRIX32 "\n", hashMD5(&M));
+    printf("%02" PRIX32 "\n", M.threeTwo);
 
     // Closing file
     fclose(infile);
