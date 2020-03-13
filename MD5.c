@@ -11,10 +11,10 @@
 
 // Four "Words"(32-bit) initialized  in low order hexidecimal
 // These are usd in each round of the MD5 operation
-#define WordA 0x67452301
-#define WordB 0xefcdab89
-#define WordC 0x98badcfe
-#define WordD 0x10325476
+#define A 0x67452301
+#define B 0xefcdab89
+#define C 0x98badcfe
+#define D 0x10325476
 
 // MD5 Rotation Constants
 // The values in K will be used in each step of the MD5 Algorithm
@@ -23,6 +23,7 @@
     for (i = 0; i <= 64)
         K[i] = floor(2^32 * abs(sin(i+1)))
 ****/
+
 const uint32_t K[64] ={    
         0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a,
         0xa8304613, 0xfd469501, 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -92,6 +93,21 @@ static uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
 static uint32_t ROTL(uint32_t w, int s){
     return ((w << s) | (w >> (32-s)));
 }
+
+/*
+#define AuxF(x,y,z) ((x & y) | (~x & z))
+#define AuxG(x,y,z) ((x & z) | (y & ~z))
+#define AuxH(x,y,z) (x ^ y ^ z)
+#define AuxI(x,y,z) (y ^ (x | ~z))
+
+#define ROTL(w, s) ((w << s) | (w >> (32-s)))
+
+#define F(a,b,c,d,m,si,k){a+=F(b,c,d)+m+k; a=b+ROTL(a,s[0][si]);}
+#define G(a,b,c,d,m,si,k){a+=G(b,c,d)+m+k; a=b+ROTL(a,s[1][si]);}
+#define H(a,b,c,d,m,si,k){a+=H(b,c,d)+m+k; a=b+ROTL(a,s[2][si]);}
+#define I(a,b,c,d,m,si,k){a+=I(b,c,d)+m+k; a=b+ROTL(a,s[3][si]);}
+*/
+
 // What the params do:
 // 1. a,b,c,d are the 4 16 bit words
 // x is somthing random I don't know need to find out
@@ -109,7 +125,7 @@ static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
     }// for
     a += AuxF(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
-    return a += b;
+    return (a += b);
 }// F // Round 1, first 16 operations
 
 static uint32_t G(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
@@ -120,7 +136,7 @@ static uint32_t G(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
     }// for
     a += AuxG(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
-    a += b;
+    return (a += b);
 }// G // Round 2, second 16 operations
 
 static uint32_t H(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
@@ -131,7 +147,7 @@ static uint32_t H(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
     }// for
     a += AuxH(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
-    a += b;
+    return (a += b);
 }// H // Round 3, third 16 operations
 
 static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
@@ -142,7 +158,7 @@ static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
     }// for
     a += AuxI(b,c,d) + m + k;
     a = ROTL(a, shiftAmount);
-    a += b;
+    return (a += b);
 }// I // Round 4, fourth 16 operations
 
 // This function is taken from the SHA256 algorithm as it and MD5 share the exact same padding method
@@ -172,13 +188,13 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
                 M->eight[i] = 0x00;
             // the last 8-bytes are equal ot the number of bits read in from the file
             // see the union for layout of the allocated memory
-            M->sixFour[7] = htobe64(*numbits) // converts byte order to the order of the current machine
+            M->sixFour[7] = htobe64(*numbits); // converts byte order to the order of the current machine
             // one the 1-bit, 0-bits and number of bits have been added to the Union memory allocation, padding is done
             *status = FINISH;
         break;
         default:
             // Read 64 bytes from the file
-            numBytesRead = fread(M->eight, 1, 64, infile)
+            numBytesRead = fread(M->eight, 1, 64, infile);
             // Dereferencing numbits to be equal to what is just read in
             *numbits += (8ULL * ((uint64_t) numBytesRead));
             // Check if padding needs to be done to a message
@@ -196,9 +212,9 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
                 // if the number of bytes read in is greater then 64 then need to read in anyway between 56 and 64
                 // in order to maintain the Message digest size of 448 % 512 for MD5
                 // append the 1-bit to the front of the new block
-                M->eight[numBytesRead] = 0x80
+                M->eight[numBytesRead] = 0x80;
                 // from the new block plus the 1-bit up to the limit of the new block
-                for(i = numBytesRead + 1; i< 64)
+                for(i = numBytesRead + 1; i< 64; i++)
                     M->eight[i] = 0x00;
                 // indicate that the new block needs to be padded
                 *status = PAD0;
@@ -212,8 +228,9 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
     return 1;
 }
 
+uint32_t *words[4];
 // This function will preform the MD5 hashing on the message
-uint32_t hashMD5(BLOCK *M, uint32_t A, uint32_t B, uint32_t C, uint32_t D){
+uint32_t hashMD5(BLOCK *M){
 
     // Each round consists of 16 operations, there are 4 rounds and each round uses a different auxillary funciton
     // Each operation uses a unique element of the K[i] constant, A,B,C,D are also costants that change their order 
@@ -292,12 +309,12 @@ uint32_t hashMD5(BLOCK *M, uint32_t A, uint32_t B, uint32_t C, uint32_t D){
     I(c,d,a,b,M->threeTwo[2],2,K[62]);  // 63
     I(b,c,d,a,M->threeTwo[9],3,K[63]);  // 64
 
-    A += a;
-    B += b;
-    C += c;
-    D += d;
-
+    words[0]+=a;
+    words[1]+=b;
+    words[2]+=c;
+    words[3]+=d;
 }   
+
 
 int main(int argc, char *argv[]){
     // Check if the program has recieved any file as input
@@ -322,15 +339,15 @@ int main(int argc, char *argv[]){
 
     // this while loop pads the messages based on the input
     // it continues until there is nothing left to pad
-    while(padding(&M, infile, &numbits, &status))
-    {
-        hashMD5(&M, WordA, WordB, WordC, WordD);
-    }// while
-    for(int i =0; i <15; i++)
-    printf("%02x", M.threeTwo[i]);
+    padding(&M, infile, &numbits, &status);
 
+
+    hashMD5(&M);
+    
+    for(int i=0;i<4;i++)
+        printf("%02X%02X%02X%02X", words[i]);
+    
     printf("\n");
-
     // Closing file
     fclose(infile);
 
