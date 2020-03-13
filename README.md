@@ -16,5 +16,5 @@
 [https://cs.indstate.edu/~fsagar/doc/paper.pdf](https://cs.indstate.edu/~fsagar/doc/paper.pdf)  
 [https://rosettacode.org/wiki/MD5#C](https://rosettacode.org/wiki/MD5#C)  
 [https://dox.ipxe.org/md5_8c_source.html](https://dox.ipxe.org/md5_8c_source.html)  
-
+[https://linux.die.net/man/3/htobe64](https://linux.die.net/man/3/htobe64)  
 

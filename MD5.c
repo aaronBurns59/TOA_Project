@@ -54,10 +54,12 @@ const int s[4][4]= {
 // 64 8-bit blocks
 // 8 64-bit blocks
 // 16 32-bit blocks
-// !!!Explain the names and their values!!!
 typedef union{
+    // For accessing each bit in memory // Assigning the 1-bit and 0-bits for padding
     uint8_t eight[64];
+    // For accessing the memory in 8-bit (1-byte) blocks // Assigning the last byte to the number of bits read in
     uint64_t sixFour[8];
+    // Input for MD5 is 512-bits (64-bytes) broken into 16 32-bit blocks
     uint32_t threeTwo[16];
     } BLOCK;
 
@@ -154,42 +156,42 @@ static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
 int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
 
     int i;    
+    int numBytesRead;
 
-    // Check the status og the PADDING flag before anything is read in
-    if(*status == FINISH)
-    // If the status is FINISH then no padding needs to be done
-        return 0;
-	if(*status == PAD0)
-	{
-		// < 56 because you need to leave room for the last 8 bytes of the message 64 - 8 = 56
-		for(int i = 0; i < 56; i++)
-			M->eight[0];
-		// need to stick the 64 bit message into the last 8 bytes of the now padded message
-		// index 7 is the last byte of this version of M in its 64 bit form
-		// make the last byte of M equal to the message passed in
-		// the rest of the bytes in M are now 0's except for the first bit which is a single 1-bit
-		M->sixFour[7]  = *numbits;
-		// the padding is done, set the status to finish
-		*status= FINISH;
-		return 1;
-	}// if
-
-	int noBytesRead = fread(M->eight, 1, 64, infile);
-	if(noBytesRead == 64)
-		return 1;
-
-	// can fit all the padding in the last block
-	if(noBytesRead < 56)
-	{
-		// this will be the position to put the 1 bit
-		M->eight[noBytesRead] = 0x80;
-		for(int i = noBytesRead + 1; i < 56; i++)
-			M->eight[i] = 0;
-		M->sixFour[7] = *numbits;
-		*status = FINISH;
-		return 1;
-	}// if
-
+    // using a switch with the status in PADDING to decide the phase of padding needed
+    switch(*status)
+    {
+        case FINISH:
+            // if no padding needs to be done
+            return 0;
+        case PAD0:
+            // i + 1 < 56 because the first byte is for the 1-bit and 
+            // the last 8-bytes of the 64-bytes of memory in M is needed for the message
+            for(i = 1; i < 56; i++)
+            // this is the 0 padding from 
+                M->eight[i] = 0x00;
+            // the last 8-bytes are equal ot the number of bits read in from the file
+            // see the union for layout of the allocated memory
+            M->sixFour[7] = htobe64(*numbits) // converts byte order to the order of the current machine
+            // one the 1-bit, 0-bits and number of bits have been added to the Union memory allocation, padding is done
+            *status = FINISH;
+        break;
+        default:
+            // Read 64 bytes from the file
+            numBytesRead = fread(M->eight, 1, 64, infile)
+            // Dereferencing numbits to be equal to what is just read in
+            *numbits += (8ULL * ((uint64_t) numBytesRead));
+            // Check if padding needs to be done to a message
+            if(numBytesRead < 56)
+            {
+                // Do all the padding if the number of bytes is less then 56
+                M->eight[numBytesRead] = 0x80;
+                for(i = numBytesRead + 1; i < 56; i++)
+                    M->eight[i] = 0x00;
+                M->sixFour[7] = htobe64(*numbits);
+                *status = FINISH;
+            }// if
+    }// switch
 }
 
 // This function will preform the MD5 hashing on the message
