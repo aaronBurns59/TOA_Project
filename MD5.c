@@ -306,7 +306,8 @@ int main(int argc, char *argv[]){
         hashMD5(&M, WordA, WordB, WordC, WordD);
     }// while
 
-    printf("%02x", M.threeTwo[0]);
+    for(int i = 0; i < 15; i++)
+    printf("%02x\n", M.threeTwo[i]);
 
     printf("\n");
 
