@@ -191,7 +191,25 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
                 M->sixFour[7] = htobe64(*numbits);
                 *status = FINISH;
             }// if
+            else if(numBytesRead < 64)
+            {
+                // if the number of bytes read in is greater then 64 then need to read in anyway between 56 and 64
+                // in order to maintain the Message digest size of 448 % 512 for MD5
+                // append the 1-bit to the front of the new block
+                M->eight[numBytesRead] = 0x80
+                // from the new block plus the 1-bit up to the limit of the new block
+                for(i = numBytesRead + 1; i< 64)
+                    M->eight[i] = 0x00;
+                // indicate that the new block needs to be padded
+                *status = PAD0;
+            }// else if
     }// switch
+
+    // Convert to host machine endian order
+    for(i = 0; i < 16; i++)
+        M->threeTwo[i] = be32toh(M->threeTwo[i]);
+    
+    return 1;
 }
 
 // This function will preform the MD5 hashing on the message
