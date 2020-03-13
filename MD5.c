@@ -57,9 +57,9 @@ const int s[4][4]= {
 // !!!Explain the names and their values!!!
 typedef union{
     uint8_t eight[64];
-    uint32_t sixFour[8];
-    uint64_t threeTwo[16];
-} BLOCK;
+    uint64_t sixFour[8];
+    uint32_t threeTwo[16];
+    } BLOCK;
 
 typedef enum{ 
     READ,
@@ -152,8 +152,45 @@ static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
 // enum element to show the status of padding
 // This funciton will process the input into the padded messages of the right size
 int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
-  
+    
+
+    // Check the status og the PADDING flag before anything is read in
+    if(*status == FINISH)
+    // If the status is FINISH then no padding needs to be done
+        return 0;
+	if(*status == PAD0)
+	{
+		// < 56 because you need to leave room for the last 8 bytes of the message 64 - 8 = 56
+		for(int i = 0; i < 56; i++)
+			M->eight[0];
+		// need to stick the 64 bit message into the last 8 bytes of the now padded message
+		// index 7 is the last byte of this version of M in its 64 bit form
+		// make the last byte of M equal to the message passed in
+		// the rest of the bytes in M are now 0's except for the first bit which is a single 1-bit
+		M->sixFour[7]  = *numbits;
+		// the padding is done, set the status to finish
+		*status= FINISH;
+		return 1;
+	}// if
+
+	size_t noBytesRead = fread(M->eight, 1, 64, infile);
+	if(noBytesRead == 64)
+		return 1;
+
+	// can fit all the padding in the last block
+	if(noBytesRead < 56)
+	{
+		// this will be the position to put the 1 bit
+		M->eight[noBytesRead] = 0x80;
+		for(int i = noBytesRead + 1; i < 56; i++)
+			M->eight[i] = 0;
+		M->sixFour[7] = *numbits;
+		*status = FINISH;
+		return 1;
+	}// if
+
 }
+
 // This function will preform the MD5 hashing on the message
 uint32_t hashMD5(BLOCK *M, uint32_t A, uint32_t B, uint32_t C, uint32_t D){
 
@@ -262,7 +299,6 @@ int main(int argc, char *argv[]){
     uint64_t numbits = 0;
     PADDING status = READ;
 
-
     // this while loop pads the messages based on the input
     // it continues until there is nothing left to pad
     while(padding(&M, infile, &numbits, &status))
@@ -270,7 +306,9 @@ int main(int argc, char *argv[]){
         hashMD5(&M, WordA, WordB, WordC, WordD);
     }// while
 
-    printf("%02" PRIX32 "\n", M.threeTwo);
+    printf("%02x", M.threeTwo[0]);
+
+    printf("\n");
 
     // Closing file
     fclose(infile);
