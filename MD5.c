@@ -51,6 +51,7 @@ const int s[4][4]= {
 };
 
 // 64 bytes of memeory that can be accessed in different types
+// !!!Explain the names and their values!!!
 typedef union{
     uint8_t eight[64];
     uint32_t sixFour[8];
@@ -60,6 +61,7 @@ typedef union{
 typedef enum{ 
     READ,
     PAD0,
+    PAD1,
     FINISH
 }PADDING;
 
@@ -89,7 +91,7 @@ static uint32_t ROTL(uint32_t w, int s){
 // What the params do:
 // 1. a,b,c,d are the 4 16 bit words
 // x is somthing random I don't know need to find out
-// si, sj are for accesing the elements of the s 2d array which are used in each round
+// si is for accessing the elements of the s 2d array which are used in each round
 // ^^ might be able to pass these easier it is only a 4*4 2d array
 // k is the 64 constants declared above
 static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
@@ -158,10 +160,14 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
         case FINISH:
         // no padding is needed if the status is finish
             return 0;
+        case PAD1:
+        // add the 1-bit to the start of the message
+            M->eight[0] = 0x80; 
+            break;
         case PAD0:
             // We need to pad the message with ZEROS
-            // 56 is because of ???
-            for(i = 0; i< 56; i++){
+            // 56 is because of 64 - 8, the last 8 bytes of this message is needed for the nobits read in
+            for(i = 1; i< 56; i++){
                 // pad the message with the 0's needed 
                 M->eight[i] = 0X00;
             }// for
