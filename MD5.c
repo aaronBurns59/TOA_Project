@@ -152,7 +152,8 @@ static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, in
 // enum element to show the status of padding
 // This funciton will process the input into the padded messages of the right size
 int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
-    
+
+    int i;    
 
     // Check the status og the PADDING flag before anything is read in
     if(*status == FINISH)
@@ -173,7 +174,7 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
 		return 1;
 	}// if
 
-	size_t noBytesRead = fread(M->eight, 1, 64, infile);
+	int noBytesRead = fread(M->eight, 1, 64, infile);
 	if(noBytesRead == 64)
 		return 1;
 
@@ -305,9 +306,8 @@ int main(int argc, char *argv[]){
     {
         hashMD5(&M, WordA, WordB, WordC, WordD);
     }// while
-
-    for(int i = 0; i < 15; i++)
-    printf("%02x\n", M.threeTwo[i]);
+    for(int i =0; i <15; i++)
+    printf("%02x", M.threeTwo[i]);
 
     printf("\n");
 
