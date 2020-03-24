@@ -62,7 +62,7 @@ typedef union{
     uint64_t sixFour[8];
     // Input for MD5 is 512-bits (64-bytes) broken into 16 32-bit blocks
     uint32_t threeTwo[16];
-    } BLOCK;
+}BLOCK;
 
 typedef enum{ 
     READ,
@@ -70,6 +70,29 @@ typedef enum{
     FINISH
 }PADDING;
 
+struct{
+    uint32_t result[4];
+}OUTPUT;
+
+#define AuxF(x,y,z) ((x & y) | (~x & z))
+#define AuxG(x,y,z) ((x & z) | (y & ~z))
+#define AuxH(x,y,z) (x ^ y ^ z)
+#define AuxI(x,y,z) (y ^ (x | ~z))
+
+#define ROTL(w, s) ((w << s) | (w >> (32-s)))
+
+#define F(a,b,c,d,m,si,k){a+=AuxF(b,c,d)+m+k; a=b+ROTL(a,s[0][si]);}
+#define G(a,b,c,d,m,si,k){a+=AuxG(b,c,d)+m+k; a=b+ROTL(a,s[1][si]);}
+#define H(a,b,c,d,m,si,k){a+=AuxH(b,c,d)+m+k; a=b+ROTL(a,s[2][si]);}
+#define I(a,b,c,d,m,si,k){a+=AuxI(b,c,d)+m+k; a=b+ROTL(a,s[3][si]);}
+
+// What the params do:
+// 1. a,b,c,d are the 4 16 bit words
+// x is somthing random I don't know need to find out
+// si is for accessing the elements of the s 2d array which are used in each round
+// ^^ might be able to pass these easier it is only a 4*4 2d array
+// k is the 64 constants declared above
+/*
 // Auxillary Functions used in the MD5 Algorithm
 // Logical Operators ~ : NOT, ^ : XOR, & : AND, | : OR
 static uint32_t AuxF(uint32_t x, uint32_t y, uint32_t z){
@@ -92,74 +115,32 @@ static uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
 // Takes in a word (w) and left rotate its bits by the amount given (s)
 static uint32_t ROTL(uint32_t w, int s){
     return ((w << s) | (w >> (32-s)));
-}
+}// Rotate bits left
 
-/*
-#define AuxF(x,y,z) ((x & y) | (~x & z))
-#define AuxG(x,y,z) ((x & z) | (y & ~z))
-#define AuxH(x,y,z) (x ^ y ^ z)
-#define AuxI(x,y,z) (y ^ (x | ~z))
-
-#define ROTL(w, s) ((w << s) | (w >> (32-s)))
-
-#define F(a,b,c,d,m,si,k){a+=F(b,c,d)+m+k; a=b+ROTL(a,s[0][si]);}
-#define G(a,b,c,d,m,si,k){a+=G(b,c,d)+m+k; a=b+ROTL(a,s[1][si]);}
-#define H(a,b,c,d,m,si,k){a+=H(b,c,d)+m+k; a=b+ROTL(a,s[2][si]);}
-#define I(a,b,c,d,m,si,k){a+=I(b,c,d)+m+k; a=b+ROTL(a,s[3][si]);}
-*/
-
-// What the params do:
-// 1. a,b,c,d are the 4 16 bit words
-// x is somthing random I don't know need to find out
-// si is for accessing the elements of the s 2d array which are used in each round
-// ^^ might be able to pass these easier it is only a 4*4 2d array
-// k is the 64 constants declared above
 static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-   /* int shiftAmount;
-    // getting the element of the 2d array of s
-    // this is used in each round of operations 
-    for(int i = 0; i <= si; i++)
-    {
-        shiftAmount = s[0][i];
-        // printf("Accessing s elemetents: %d\n", shiftAmount);
-    }// for*/
     a += AuxF(b,c,d) + m + k;
     a = ROTL(a, s[0][si]);
     return (a += b);
 }// F // Round 1, first 16 operations
 
 static uint32_t G(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-   /* int shiftAmount;
-    for(int i = 0; i <= si; i++)
-    {
-        shiftAmount = s[1][si];
-    }// for*/
     a += AuxG(b,c,d) + m + k;
     a = ROTL(a, s[1][si]);
     return (a += b);
 }// G // Round 2, second 16 operations
 
 static uint32_t H(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-   /* int shiftAmount;
-    for(int i = 0; i <= si; i++)
-    {
-        shiftAmount = s[2][si];
-    }// for*/
     a += AuxH(b,c,d) + m + k;
     a = ROTL(a, s[2][si]);
     return (a += b);
 }// H // Round 3, third 16 operations
 
 static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-   /* int shiftAmount;
-    for(int i = 0; i <= si; i++)
-    {
-        shiftAmount = s[3][si];
-    }// for */
     a += AuxI(b,c,d) + m + k;
     a = ROTL(a, s[3][si]);
     return (a += b);
 }// I // Round 4, fourth 16 operations
+*/
 
 // This function is taken from the SHA256 algorithm as it and MD5 share the exact same padding method
 // Section 5.1.1 in the Secure Hash Algorithm Standard
@@ -228,9 +209,10 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
     return 1;
 }
 
-uint32_t *words[4];
+uint32_t words[4];
+
 // This function will preform the MD5 hashing on the message
-uint32_t hashMD5(BLOCK *M){
+void hashMD5(BLOCK *M){
 
     // Each round consists of 16 operations, there are 4 rounds and each round uses a different auxillary funciton
     // Each operation uses a unique element of the K[i] constant, A,B,C,D are also costants that change their order 
@@ -238,7 +220,7 @@ uint32_t hashMD5(BLOCK *M){
     // M and K is the select the shift amounts from the s[i][j] 2d array constant, see the method F,G,H or I to see how 
     // that works
 
-    int a = A, b = B, c = C, d = D;
+    uint32_t a = A, b = B, c = C, d = D;
 
     // =====Round 1===================Operation
     F(a,b,c,d,M->threeTwo[0],0,K[0]);   //  1
@@ -315,7 +297,6 @@ uint32_t hashMD5(BLOCK *M){
     words[3]+=d;
 }   
 
-
 int main(int argc, char *argv[]){
     // Check if the program has recieved any file as input
     if(argc != 2){
@@ -339,13 +320,13 @@ int main(int argc, char *argv[]){
 
     // this while loop pads the messages based on the input
     // it continues until there is nothing left to pad
-    padding(&M, infile, &numbits, &status);
+    while( padding(&M, infile, &numbits, &status))
+    {
+        hashMD5(&M);
+    }// while
 
-
-    hashMD5(&M);
-    
     for(int i=0;i<4;i++)
-        printf("%02X%02X%02X%02X", words[i]);
+        printf("%02x\n", words[i]);
     
     printf("\n");
     // Closing file
