@@ -40,7 +40,7 @@ const uint32_t K[64] ={
 
 // Bit shift amounts for each round of operations
 // The values of s will be used in every round
-const int s[4][4]= {
+const int S[4][4]= {
     // Shift amounts for Round 1
     {7,12,17,22},
     // Shift amounts for Round 2
@@ -74,6 +74,8 @@ struct{
     uint32_t result[4];
 }OUTPUT;
 
+
+
 #define AuxF(x,y,z) ((x & y) | (~x & z))
 #define AuxG(x,y,z) ((x & z) | (y & ~z))
 #define AuxH(x,y,z) (x ^ y ^ z)
@@ -81,17 +83,17 @@ struct{
 
 #define ROTL(w, s) ((w << s) | (w >> (32-s)))
 
-#define F(a,b,c,d,m,si,k){a+=AuxF(b,c,d)+m+k; a=b+ROTL(a,s[0][si]);}
-#define G(a,b,c,d,m,si,k){a+=AuxG(b,c,d)+m+k; a=b+ROTL(a,s[1][si]);}
-#define H(a,b,c,d,m,si,k){a+=AuxH(b,c,d)+m+k; a=b+ROTL(a,s[2][si]);}
-#define I(a,b,c,d,m,si,k){a+=AuxI(b,c,d)+m+k; a=b+ROTL(a,s[3][si]);}
-
 // What the params do:
 // 1. a,b,c,d are the 4 16 bit words
 // x is somthing random I don't know need to find out
 // si is for accessing the elements of the s 2d array which are used in each round
-// ^^ might be able to pass these easier it is only a 4*4 2d array
 // k is the 64 constants declared above
+#define F(a,b,c,d,m,si,k){a+=AuxF(b,c,d)+m+k; a=b+ROTL(a,S[0][si]);}
+#define G(a,b,c,d,m,si,k){a+=AuxG(b,c,d)+m+k; a=b+ROTL(a,S[1][si]);}
+#define H(a,b,c,d,m,si,k){a+=AuxH(b,c,d)+m+k; a=b+ROTL(a,S[2][si]);}
+#define I(a,b,c,d,m,si,k){a+=AuxI(b,c,d)+m+k; a=b+ROTL(a,S[3][si]);}
+
+
 /*
 // Auxillary Functions used in the MD5 Algorithm
 // Logical Operators ~ : NOT, ^ : XOR, & : AND, | : OR
@@ -326,7 +328,7 @@ int main(int argc, char *argv[]){
     }// while
 
     for(int i=0;i<4;i++)
-        printf("%02x\n", words[i]);
+        printf("%02x", words[i]);
     
     printf("\n");
     // Closing file
