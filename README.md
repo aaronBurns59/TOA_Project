@@ -27,10 +27,10 @@
     * __l + 1 + n = 448 % 512__
 4. Then add the 128-bit block that is equal to the number 'l' in binary.
 
-#### Example: *8-bit ASCII Message "abc"***
-* This message has a lenght 'l' of 24-bits because each ASCII character is 8-bit and there is three of them.
-* This message in bits has the 1 bit appended to it, then 'n' number of 0-bits adn finallythe length of the original message is appended.
-* The amount of 0-bits needed for this padding is 448 - (l(24) + 1) = 423
+#### Example: *8-bit ASCII Message "abc"*
+- This message has a lenght 'l' of 24-bits because each ASCII character is 8-bit and there is three of them.
+- This message in bits has the 1 bit appended to it, then 'n' number of 0-bits adn finallythe length of the original message is appended.
+- The amount of 0-bits needed for this padding is 448 - (l(24) + 1) = 423
 
     Algorithm: 'a' + 'b' + 'c' + '1' + 'n' + 'l'  
     Binary: 01100001 + 01100010 + 01100010 + 1 + 00...00 + 00...01100  
