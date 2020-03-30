@@ -64,17 +64,13 @@ typedef union{
     uint32_t threeTwo[16];
 }BLOCK;
 
+
+// enum used to determine what stage of padding the message is in
 typedef enum{ 
     READ,
     PAD0,
     FINISH
 }PADDING;
-
-struct{
-    uint32_t result[4];
-}OUTPUT;
-
-
 
 #define AuxF(x,y,z) ((x & y) | (~x & z))
 #define AuxG(x,y,z) ((x & z) | (y & ~z))
@@ -83,16 +79,15 @@ struct{
 
 #define ROTL(w, s) ((w << s) | (w >> (32-s)))
 
-// What the params do:
-// 1. a,b,c,d are the 4 16 bit words
-// x is somthing random I don't know need to find out
-// si is for accessing the elements of the s 2d array which are used in each round
+// What the params are for:
+// a,b,c,d are the 4 16 bit words
+// m is the message which is stored in the union use here in its 32-bit type
+// si is for accessing the elements of the s 2d array which are used in each round for bit shifting
 // k is the 64 constants declared above
 #define F(a,b,c,d,m,si,k){a+=AuxF(b,c,d)+m+k; a=b+ROTL(a,S[0][si]);}
 #define G(a,b,c,d,m,si,k){a+=AuxG(b,c,d)+m+k; a=b+ROTL(a,S[1][si]);}
 #define H(a,b,c,d,m,si,k){a+=AuxH(b,c,d)+m+k; a=b+ROTL(a,S[2][si]);}
 #define I(a,b,c,d,m,si,k){a+=AuxI(b,c,d)+m+k; a=b+ROTL(a,S[3][si]);}
-
 
 /*
 // Auxillary Functions used in the MD5 Algorithm
@@ -211,6 +206,7 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
     return 1;
 }
 
+// used for output
 uint32_t words[4];
 
 // This function will preform the MD5 hashing on the message
@@ -222,6 +218,7 @@ void hashMD5(BLOCK *M){
     // M and K is the select the shift amounts from the s[i][j] 2d array constant, see the method F,G,H or I to see how 
     // that works
 
+    // initializing the hash values
     uint32_t a = A, b = B, c = C, d = D;
 
     // =====Round 1===================Operation
