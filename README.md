@@ -30,10 +30,11 @@
 #### Example 8-bit ASCII Message "abc"
 * this message has a lenght 'l' of 24-bits because each ASCII character is 8-bit and there is three of them.
 * This message in bits has the 1 bit appended to it, then 'n' number of 0-bits adn finallythe length of the original message is appended.
+* the amount of 0-bits needed for this padding is 448 - (l(24) + 1) = 423
 
-Algorithm:     'a'        'b'        'c'    '1'     'n'          'l'  
-Binary:     01100001 + 01100010 + 01100010 + 1 +  00...00  +  00...01100  
-Bits        8    +     8    +     8    + 8 +    423   +      64
+    Algorithm: 'a' + 'b' + 'c' + '1' + 'n' + 'l'  
+    Binary: 01100001 + 01100010 + 01100010 + 1 + 00...00 + 00...01100  
+    Bits: 8 + 8 + 8 + 1 + 423 + 64
 
 * l: is the lenght of the message and is appended to an otherwise empty 64-bits
 
