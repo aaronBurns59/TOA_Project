@@ -47,6 +47,7 @@
     * G(X,Y,Z): (X **AND** Z) **OR** (Y **AND NOT** Z)
     * H(X,Y,Z): X **XOR** Y **XOR** Z
     * I(X,Y,Z): Y **XOR** (Y **XOR** (X **OR NOT** Z))
+
 ## How to Run
 
 * git clone https://github.com/aaronBurns59/TOA_Project 

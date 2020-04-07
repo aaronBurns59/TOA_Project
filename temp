@@ -326,7 +326,7 @@ int main(int argc, char *argv[]){
     }// while
 
     for(int i=0;i<4;i++)
-        printf("%02X", word[i]);
+        printf("%02x", word[i]);
     
     printf("\n");
     // Closing file
