@@ -64,7 +64,6 @@ typedef union{
     uint32_t threeTwo[16];
 }BLOCK;
 
-
 // enum used to determine what stage of padding the message is in
 typedef enum{ 
     READ,
@@ -205,7 +204,6 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
     
     return 1;
 }
-
 
 // This function will preform the MD5 hashing on the message
 void hashMD5(BLOCK *M, uint32_t *word){
