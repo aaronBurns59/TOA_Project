@@ -6,7 +6,7 @@
 #include <stdint.h>
 // used for specifying the exact size of the integers in terms of bits
 #include <inttypes.h>
-// used for handling the endian of the bytes
+// used for handling the endian (big or little) of the bytes
 #include <endian.h>
 
 // Four "Words"(32-bit) initialized  in low order hexidecimal
@@ -294,6 +294,12 @@ void hashMD5(BLOCK *M, uint32_t *word){
 }   
 
 int main(int argc, char *argv[]){
+
+    // menu for options
+
+
+
+
     // Check if the program has recieved any file as input
     if(argc != 2){
         printf("Error: Expecting single file name as an argument\n");

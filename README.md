@@ -69,4 +69,6 @@ cd into the repository once it is cloned
 [https://dox.ipxe.org/md5_8c_source.html](https://dox.ipxe.org/md5_8c_source.html)  
 [https://linux.die.net/man/3/htobe64](https://linux.die.net/man/3/htobe64)  
 [https://tools.ietf.org/html/rfc1321](https://tools.ietf.org/html/rfc1321)  
+[https://en.wikipedia.org/wiki/MD5](https://en.wikipedia.org/wiki/MD5)
+[http://www.cs.haifa.ac.il/~orrd/HashFuncSeminar/Lecture2.pdf](http://www.cs.haifa.ac.il/~orrd/HashFuncSeminar/Lecture2.pdf)
 
