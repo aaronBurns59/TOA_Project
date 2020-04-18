@@ -71,11 +71,13 @@ typedef enum{
     FINISH
 }PADDING;
 
+// Auxillary functions used in in the 4 different rounds of the MD5 hashing operation
 #define AuxF(x,y,z) ((x & y) | (~x & z))
 #define AuxG(x,y,z) ((x & z) | (y & ~z))
 #define AuxH(x,y,z) (x ^ y ^ z)
 #define AuxI(x,y,z) (y ^ (x | ~z))
 
+// Bit shifting function used in each operation of the hashing algorithm
 #define ROTL(w, s) ((w << s) | (w >> (32-s)))
 
 // What the params are for:
@@ -87,56 +89,6 @@ typedef enum{
 #define G(a,b,c,d,m,si,k){a+=AuxG(b,c,d)+m+k; a=b+ROTL(a,S[1][si]);}
 #define H(a,b,c,d,m,si,k){a+=AuxH(b,c,d)+m+k; a=b+ROTL(a,S[2][si]);}
 #define I(a,b,c,d,m,si,k){a+=AuxI(b,c,d)+m+k; a=b+ROTL(a,S[3][si]);}
-
-/*
-// Auxillary Functions used in the MD5 Algorithm
-// Logical Operators ~ : NOT, ^ : XOR, & : AND, | : OR
-static uint32_t AuxF(uint32_t x, uint32_t y, uint32_t z){
-    return ((x & y) | (~x & z));
-}// F // Auxillary Function
-
-static uint32_t AuxG(uint32_t x, uint32_t y, uint32_t z){
-    return ((x & z) | (y & ~z));
-}// G // Auxillary Function
-
-static uint32_t AuxH(uint32_t x, uint32_t y, uint32_t z){
-    return (x ^ y ^ z);
-}// H // Auxillary Function
-
-static uint32_t AuxI(uint32_t x, uint32_t y, uint32_t z){
-    return (y ^ (x | ~z));
-}// I // Auxillary Function
-
-// Bit shifting function
-// Takes in a word (w) and left rotate its bits by the amount given (s)
-static uint32_t ROTL(uint32_t w, int s){
-    return ((w << s) | (w >> (32-s)));
-}// Rotate bits left
-
-static uint32_t F(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-    a += AuxF(b,c,d) + m + k;
-    a = ROTL(a, s[0][si]);
-    return (a += b);
-}// F // Round 1, first 16 operations
-
-static uint32_t G(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-    a += AuxG(b,c,d) + m + k;
-    a = ROTL(a, s[1][si]);
-    return (a += b);
-}// G // Round 2, second 16 operations
-
-static uint32_t H(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-    a += AuxH(b,c,d) + m + k;
-    a = ROTL(a, s[2][si]);
-    return (a += b);
-}// H // Round 3, third 16 operations
-
-static uint32_t I(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t m, int si, uint32_t k){
-    a += AuxI(b,c,d) + m + k;
-    a = ROTL(a, s[3][si]);
-    return (a += b);
-}// I // Round 4, fourth 16 operations
-*/
 
 // This function is taken from the SHA256 algorithm as it and MD5 share the exact same padding method
 // Section 5.1.1 in the Secure Hash Algorithm Standard
@@ -207,7 +159,6 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
 
 // This function will preform the MD5 hashing on the message
 void hashMD5(BLOCK *M, uint32_t *word){
-
     // Each round consists of 16 operations, there are 4 rounds and each round uses a different auxillary funciton
     // Each operation uses a unique element of the K[i] constant, A,B,C,D are also costants that change their order 
     // as parameters between each operation, M is the message that is going to be hashed. and the static values between
@@ -291,15 +242,9 @@ void hashMD5(BLOCK *M, uint32_t *word){
     word[1]+=b;
     word[2]+=c;
     word[3]+=d;
-}   
+}
 
 int main(int argc, char *argv[]){
-
-    // menu for options
-
-
-
-
     // Check if the program has recieved any file as input
     if(argc != 2){
         printf("Error: Expecting single file name as an argument\n");
@@ -330,7 +275,7 @@ int main(int argc, char *argv[]){
     }// while
 
     for(int i=0;i<4;i++)
-        printf("%02X", word[i]);
+        printf("%02x", word[i]);
     
     printf("\n");
     // Closing file

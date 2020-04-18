@@ -47,6 +47,9 @@
     * G(X,Y,Z): (X **AND** Z) **OR** (Y **AND NOT** Z)
     * H(X,Y,Z): X **XOR** Y **XOR** Z
     * I(X,Y,Z): Y **XOR** (Y **XOR** (X **OR NOT** Z))
+4. Before the hashing operation begins, the initial hash values define as constants are assigned to some local variables. These local variables are passed into the functions used in each operation. 
+5. The local variables that are passed into the auxillary functions in each operation during the 4 rounds, they are manipulated in each of these operations.
+6. Once the 4 local variables have been processed by the 64 operations they are returned from the hashing function and into an array which is used to display the hashed output of the intial input.
 
 ## How to Run
 
@@ -56,7 +59,7 @@ cd into the repository once it is cloned
 
 1. gcc -o md5 MD5.c
 
-2. ./md5 test.txt (or any file you want)
+2. ./md5 test.txt(or any file you want)
 
 ## Research
 
