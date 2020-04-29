@@ -10,9 +10,12 @@ The other important thing to keep in mind when learning to create a hashing algo
 
 # Run
 
+In order to run this program you will need to install the gcc compiler. 
+
 # Test
 
 # Algorithm
+The MD5 algorithm itself is very complex to get an understanding of it. However there exist many resources online which can be used to better your understanding. From summaries of the algorithm along with Pseudo code ([Summary and Pseudo Code](http://practicalcryptography.com/hashes/md5-hash/)) to the offcial algorithm itself. ([RFC-1321](https://datatracker.ietf.org/doc/rfc1321/?include_text=1))
 
 # Complexity
 
