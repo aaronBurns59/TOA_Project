@@ -62,6 +62,7 @@ cd into the repository once it is cloned
 2. ./md5 test.txt(or any file you want)
 
 ## Research
+* **Research is laid out in more detail in the overview.md file**.
 
 ## References
 [http://practicalcryptography.com/hashes/md5-hash/](http://practicalcryptography.com/hashes/md5-hash/)  

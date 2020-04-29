@@ -155,7 +155,7 @@ int padding(BLOCK *M, FILE *infile, uint64_t *numbits, PADDING *status){
         M->threeTwo[i] = be32toh(M->threeTwo[i]);
     
     return 1;
-}
+}// padding
 
 // This function will preform the MD5 hashing on the message
 void hashMD5(BLOCK *M, uint32_t *word){
@@ -242,9 +242,10 @@ void hashMD5(BLOCK *M, uint32_t *word){
     word[1]+=b;
     word[2]+=c;
     word[3]+=d;
-}
+}// hashMD5
 
 int main(int argc, char *argv[]){
+
     // Check if the program has recieved any file as input
     if(argc != 2){
         printf("Error: Expecting single file name as an argument\n");
