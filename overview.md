@@ -83,7 +83,11 @@ How the union looks in **Code**.
 * The reason for storing the data in a **Union** which allows us to access the memory in different data types is because the padding requires the input message to manipulated in a way that would be more bothersome in terms of creating temporary variables to store the data while it's being padded. But by using a Union the data stay part of the same memory block but accessed in a type that that works better with the **padding process**. 
 * The union is used in the **Padding** to make sure that the message is padded to the correct length, The correct length being equal to **448 % 512**.
 * The padding process for MD5 works as follows. Every message has to be padded to the aforementioned length. This is why the input size doesn't matter when it comes to MD5, because no matter what size the input is, large or small, it will be padded until it is a size that is equal to the equation mentioned above.
-* The end goal of the padding process is to ensure that the messages length in bits is equal to 448 % 512(essentailly it should be 64-bits shy of the Unions total memory). Padding is done on every input into the MD5 algorithm even if the total amounts of bits already matches what is required.
+* The end goal of the padding process is to ensure that the messages length in bits is equal to 448 % 512(essentailly it should be 64-bits shy of the Unions total memory). Padding is done on every message into the MD5 algorithm even if the total amounts of bits already matches what is required.
+    1. The first part of the padding process is to append a single **1-bit** to the end of the message
+    2. Then append as many **0-bits** as are needed to *ensure the message is congruent to 448 % 512*.
+    3. A 64-bit representation of the length of original message is then appended.
+* At the end of the padding process the message will look like the original message in bits + 1-bit + n 0-bits + A 64-bit block of the length of the message before pre padding. And it will match the size requirement needed for the MD5 algorithm.(*An example of how it may look is in the Padding Section of the* **README**)
 ![Padding](Images/padding.png "Image of how Padding should look")
 
 ## Auxillary Functions
