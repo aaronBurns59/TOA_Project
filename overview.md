@@ -98,7 +98,7 @@ How the union looks in **Code**.
 * The H Auxillary Function is used in the third round of 16 operations.
 * The I Auxillary Function is used in the final round of 16 operations.
 The Functions operate as such:  
-![Auxillary Functions](Images/AuxFunction2.png "Auxillary functions layout")
+![Auxillary Functions](Images/AuxFunctions2.png "Auxillary functions layout")
 
 ## Bit Shift Function
 
