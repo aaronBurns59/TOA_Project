@@ -75,4 +75,4 @@ cd into the repository once it is cloned
 [https://tools.ietf.org/html/rfc1321](https://tools.ietf.org/html/rfc1321)  
 [https://en.wikipedia.org/wiki/MD5](https://en.wikipedia.org/wiki/MD5)
 [http://www.cs.haifa.ac.il/~orrd/HashFuncSeminar/Lecture2.pdf](http://www.cs.haifa.ac.il/~orrd/HashFuncSeminar/Lecture2.pdf)
-
+[https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf)

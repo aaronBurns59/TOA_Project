@@ -79,13 +79,17 @@ Diagram of how the union looks and operates in memory.
 How the union looks in **Code**.  
 ![Union Code](Images/unionCode.png "Code of the Union")
 
-* The union is used in the **Padding** to make sure that the message is padded to the correct length, The correct lenght being 448 % 512.
-* The padding process for MD5 works as follows. Every message has to be padded to the aforementioned length
+## Padding
+* The reason for storing the data in a **Union** which allows us to access the memory in different data types is because the padding requires the input message to manipulated in a way that would be more bothersome in terms of creating temporary variables to store the data while it's being padded. But by using a Union the data stay part of the same memory block but accessed in a type that that works better with the **padding process**. 
+* The union is used in the **Padding** to make sure that the message is padded to the correct length, The correct length being equal to **448 % 512**.
+* The padding process for MD5 works as follows. Every message has to be padded to the aforementioned length. This is why the input size doesn't matter when it comes to MD5, because no matter what size the input is, large or small, it will be padded until it is a size that is equal to the equation mentioned above.
+* The end goal of the padding process is to ensure that the messages length in bits is equal to 448 % 512(essentailly it should be 64-bits shy of the Unions total memory). Padding is done on every input into the MD5 algorithm even if the total amounts of bits already matches what is required.
+![Padding](Images/padding.png "Image of how Padding should look")
 
 ## Auxillary Functions
 * There are 4 Auxillary functions used in (image here)
 
-## Padding
+
 
 ## Hashing
 put the stuff about rounds in here
@@ -94,6 +98,8 @@ put the stuff about rounds in here
 
 # Research
 
-* [gcc for Windows](https://youtu.be/0Z4Xga_7gp0) Video used for installing *C Compiler* for Windows 
+* [gcc for Windows](https://youtu.be/0Z4Xga_7gp0): Video used for installing *C Compiler* for Windows 
 
-* [Practical Cryptography](http://practicalcryptography.com/hashes/md5-hash/) Practical Cryptography website used for learning about the broad aspects of MD5 algorithm and used its built in MD5 calculator for verification of hash outputs.
+* [Practical Cryptography](http://practicalcryptography.com/hashes/md5-hash/): Practical Cryptography website used for learning about the broad aspects of MD5 algorithm and used its built in MD5 calculator for verification of hash outputs.
+
+* [SHA256 Padding](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf): Studied the padding from the SHA256 algorithm as it is the same that is used in the MD5 Algorithm
