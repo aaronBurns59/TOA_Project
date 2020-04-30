@@ -16,7 +16,7 @@ The other important thing to keep in mind when learning to build a hashing algor
 
 Go to [MSYS2 Website](https://www.msys2.org/), and click the download which is recommended for your system. (The website will tell you which one is recommended).
 
-Onces it's downloaded, follow the Windows installer process until it is finished. It will open a cmd window similar to the windows CMD console.
+Once it's downloaded, follow the Window's installer process until it is finished. It will open a cmd window similar to the windows CMD console.
 
 Then update pacman(A package managing enviroment) using the following line in the CMD. Pacman makes it very easy to manage the installation of packages including the gcc
 * pacman -Syu
@@ -24,7 +24,7 @@ Then update pacman(A package managing enviroment) using the following line in th
 Then install the gcc package by using the following line in the CMD
 * pacman -S base-deve1 gcc vim cmake
 
-In order to use the *C compiler* in the standard windows console, you need to add the the following enviroment variables(Search this term in the windows search bar) to the PATh in windows 10.
+In order to use the *C compiler* in the standard windows console, you need to add the the following enviroment variables(Search this term in the windows search bar) to the PATH in windows 10.
 * C:\msys64\mingw64\bin
 * C:\msys64\usr\bin
 
@@ -53,7 +53,7 @@ This line is to verify if gcc is install, it will also tell you the version.
 # Test
 
 # Algorithm
-The MD5 algorithm itself is very complex and challeneging to get an understanding of. However there exist many resources online which can be used to better your understanding. From summaries of the algorithm along with Pseudo code ([Summary and Pseudo Code](http://practicalcryptography.com/hashes/md5-hash/)), to the offcial algorithm itself ([RFC-1321](https://datatracker.ietf.org/doc/rfc1321/?include_text=1)). The MD5 algorithm has many components that are used not only in the hashing process itself but in the padding process, there are also a number of constants that are used thoughout the program as well as other data types for storing the input. Every component of this program is used in either the padding process or the hashing process. Most of these components that are used in the hashing process which takes place **hashMD5** function such as the constants K and S (more on these later). However the input message itself is not stored as a static variable. It is store in a Union. The reason for this is because throughout the program the message needs to be read in different sizes of ints. And using a Union allows us to store the exact same data in different data types. I will go into more detail about how Unions are used in this project later.
+The MD5 algorithm itself is very complex and challeneging to get an understanding of. However there exist many resources online which can be used to better your understanding. From summaries of the algorithm along with Pseudo code ([Summary and Pseudo Code](http://practicalcryptography.com/hashes/md5-hash/)), to the offcial algorithm itself ([RFC-1321](https://datatracker.ietf.org/doc/rfc1321/?include_text=1)). The MD5 algorithm has many components that are used not only in the hashing process itself but in the padding process, there are also a number of constants that are used thoughout the program as well as other data types for storing the input. Every component of this program is used in either the padding process or the hashing process. Most of these components that are used in the hashing process which takes place **hashMD5** function such as the constants K and S (more on these later). However the input message itself is not stored as a static variable. It is store in a Union. The reason for this is because through out the program the message needs to be read in different sizes of ints. And using a Union allows us to store the exact same data in different data types. I will go into more detail about how Unions are used in this project later.
 
 ## Constants and Other Data Types
 
@@ -66,7 +66,7 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 ![K Constants](Images/K.png "List of Constants K")
 
 ### S 
-* S is a constant 2D array of ints that contains static values that are used in the bit shifting process (more on this later). These ints are used in the operations of the hasing process, the first row in the 2D array is used in the first round, and given that there are 16 operations per round the values in the columns are used 4 times each.
+* S is a constant 2D array of ints that contains static values that are used in the bit shifting process (more on this later). These ints are used in the operations of the hashing process, the first row in the 2D array is used in the first round, and given that there are 16 operations per round the values in the columns are used 4 times each.
 ![S Code](Images/S.png "List of Constants S in code")
 ![S Constants](Images/S2.png "List of Constants S")
 
@@ -84,12 +84,12 @@ How the union looks in **Code**.
 * The reason for storing the data in a **Union** which allows us to access the memory in different data types is because the padding requires the input message to manipulated in a way that would be more bothersome in terms of creating temporary variables to store the data while it's being padded. But by using a Union the data stay part of the same memory block but accessed in a type that that works better with the **padding process**. 
 * The union is used in the **Padding** to make sure that the message is padded to the correct length, The correct length being equal to **448 % 512**.
 * The padding process for MD5 works as follows. Every message has to be padded to the aforementioned length. This is why the input size doesn't matter when it comes to MD5, because no matter what size the input is, large or small, it will be padded until it is a size that is equal to the equation mentioned above.
-* The end goal of the padding process is to ensure that the messages length in bits is equal to 448 % 512(essentailly it should be 64-bits shy of the Unions total memory). Padding is done on every message into the MD5 algorithm even if the total amounts of bits already matches what is required.
+* The end goal of the padding process is to ensure that the message's length in bits is equal to 448 % 512(essentailly it should be 64-bits shy of the Unions total memory). Padding is done on every message into the MD5 algorithm even if the total amounts of bits already matches what is required.
     1. The first part of the padding process is to append a single **1-bit** to the end of the message
     2. Then append as many **0-bits** as are needed to *ensure the message is congruent to 448 % 512*.
     3. A 64-bit representation of the length of original message is then appended.
 * At the end of the padding process the message will look like the original message in bits + 1-bit + n 0-bits + A 64-bit block of the length of the message before pre padding. And it will match the size requirement needed for the MD5 algorithm.(*An example of how it may look is in the Padding Section of the* **README**)
-* 'a', 'b', and 'c' are the original message in bits, then 1-bit followed by the 0-bits and finally the 64-bit Block of the lenght of the oringal message in bits.  
+* 'a', 'b', and 'c' are the original message in bits, then 1-bit followed by the 0-bits and finally the 64-bit Block of the lenght of the original message in bits.  
 ![Padding](Images/padding.png "Image of how Padding should look")
 
 ## Enum
@@ -130,7 +130,7 @@ is always called in unison with them, because of this the ROTL function is calle
 
 * [Cryptographic Hashing Functions](https://cs.indstate.edu/~fsagar/doc/paper.pdf): A paper I used to better understand the elements used in the MD5 algorithm, as well as understanding hashing in general and the elements(Constants) used in the algorithm.
 
-* [Rosetta Code](https://rosettacode.org/wiki/MD5#C): Used this site to better understand how to code the MD5 in *C* for myself, as wel as looking at how the different ways of doing the hashing process to how I eventually did it.
+* [Rosetta Code](https://rosettacode.org/wiki/MD5#C): Used this site to better understand how to code the MD5 in *C* for myself, as well as looking at how the different ways of doing the hashing process to how I eventually did it.
 
 * [iPXE](https://dox.ipxe.org/md5_8c_source.html): This source was used to corroborate what was in the previous source when it came to coding up the MD5 algorithm. I got the Idea to make the "S" bit shift amounts a 2D array from this source.
 
@@ -140,4 +140,4 @@ is always called in unison with them, because of this the ROTL function is calle
 
 * [Notes on MD5](http://www.cs.haifa.ac.il/~orrd/HashFuncSeminar/Lecture2.pdf): I used these notes early on when I wasn't sure how to approach the MD5 coding project, I decided to learn about MD5 before I attempt to use code. This source also provided some of the images used in this overview.
 
-* [Padding from SHA256](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf): I used the offcial SHA256 paper to learn and understand the padding process for MD5, as I mention in the padding section of this overiew they are identical. It was also helpful for learing about hashing algorithms because as part of this module we also built the SHA256 algorithm in labs[SHA Repo](https://github.com/aaronBurns59/SHA-256-Algorithm)
+* [Padding from SHA256](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf): I used the offcial SHA256 paper to learn and understand the padding process for MD5, as I mention in the padding section of this overiew they are identical. It was also helpful for learning about hashing algorithms because as part of this module we also built the SHA256 algorithm in labs[SHA Repo](https://github.com/aaronBurns59/SHA-256-Algorithm)
