@@ -58,7 +58,7 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 ## Constants and Other Data Types
 
 ### A,B,C,D
-* These are the intial values, that will be assigned to the local variables a,b,c,and d in the **hashMD5** function. They do not change and are only used at the start of each hashing process in the program. These static values are called registers and are static 32 bit intergers.
+* These are the intial values, that will be assigned to the local variables a,b,c,and d in the **hashMD5** function. They do not change and are only used at the start of each hashing process in the program. These static values are called registers and are static 32 bit intergers.  
 ![A,B,C,D](Images/register.png "List of Initial Hash Values")
 
 ### K 
