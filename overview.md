@@ -88,12 +88,12 @@ How the union looks in **Code**.
     1. The first part of the padding process is to append a single **1-bit** to the end of the message
     2. Then append as many **0-bits** as are needed to *ensure the message is congruent to 448 % 512*.
     3. A 64-bit representation of the length of original message is then appended.
-* At the end of the padding process the message will look like the original message in bits + 1-bit + n 0-bits + A 64-bit block of the length of the message before pre padding. And it will match the size requirement needed for the MD5 algorithm.(*An example of how it may look is in the Padding Section of the* **README**)
-* 'a', 'b', and 'c' are the original message in bits, then 1-bit followed by the 0-bits and finally the 64-bit Block of the lenght of the original message in bits.  
+* At the end of the padding process the message will look like: *The original message in bits + 1-bit + n 0-bits + A 64-bit block of the length of the message before padding*, and it will match the size requirement needed for the MD5 algorithm.(*An example of how it may look is in the Padding Section of the* **README**)
+* In relation to the picture, 'a', 'b', and 'c' are the original message in bits, then 1-bit followed by the 0-bits and finally the 64-bit Block of the lenght of the original message in bits.  
 ![Padding](Images/padding.png "Image of how Padding should look")
 
 ## Enum
-* The PADDING enum is used to check what stage of the padding process is in. This is done to check if the what needed to be padded is the 1-bit, the 0-bit or the final 64-bits
+* The PADDING enum is used to check what stage of the padding process is in. This is done to check if the what needed to be padded is the 1-bit, the 0-bit or the final 64-bits. The enumn values are PAD0, READ and FINISH. These values help the program determine part of the padding to do.
 
 ## Auxillary Functions
 * There are 4 Auxillary functions used in the MD5 algorithm. They are named F, G, H and I. Each of them are simple boolean return type functions that are used in each round of the hashing process.
@@ -105,9 +105,9 @@ The Functions operate as such:
 ![Auxillary Functions](Images/AuxFunctions2.png "Auxillary functions layout")
 
 ## Bit Shift Function
-* The **ROTL**(Rotate Left) function is left bit shifting function that is coupled with every calling each Auxillary function. It is used to further manipulate the hash output even further then just using the Auxillary Functions alone.
-* When each **Auxillary Function** regardless of which round the hashing process is in, The ROTL
-is always called in unison with them, because of this the ROTL function is called in every operation of the hashing process.
+* The **ROTL**(Rotate Left) function is a left bit shifting function that is called with each Auxillary function. It is used to further manipulate the hash output even further then just using the Auxillary Functions alone.
+* When each **Auxillary Function** regardless of which round the hashing process is in. The *ROTL*
+is always called in unison with them, This means the ROTL function is called in every operation of the hashing process.
 
 ## Hashing
 * The MD5 hashing process which takes place in the **hashMD5** function is a series of 64 **Operations** which are divided up into 4 **Rounds** of 16 operations each. Each round is differentiated by using a different **Auxillary Function**. 
