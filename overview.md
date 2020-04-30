@@ -57,6 +57,10 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 
 ## Constants and Other Data Types
 
+### A,B,C,D
+* These are the intial values, that will be assigned to the local variables a,b,c,and d in the **hashMD5** function. They do not change and are only used at the start of each hashing process in the program. These static values are called registers and are static 32 bit intergers
+![A,B,C,D](Images/register.png "List of Initial Hash Values")
+
 ### K 
 * K is a constant 32-bit integer array of size 64, each one of these ints is used in one of the 64 operations in the MD5 Algorithm. i.e. the first opertion uses the int at index 0 etc.
 ![K Constants](Images/K.png "List of Constants K")
@@ -64,6 +68,8 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 ### S 
 * S is a constant 2D array of ints that contains static values that are used in the bit shifting process (more on this later). These ints are used in the operations of the hasing process, the first row in the 2D array is used in the first round, and given that there are 16 operations per round the values in the columns are used 4 times each.
 ![S Constants](Images/S.png "List of Constants S")
+
+### Union
 
 ## Auxillary Functions
 * There are 4 Auxillary functions used in (image here)
