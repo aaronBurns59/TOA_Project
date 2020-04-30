@@ -50,8 +50,6 @@ This line is to verify if gcc is install, it will also tell you the version.
 
 - ./md5 test.txt
 
-# Test
-
 # Algorithm
 The MD5 algorithm itself is very complex and challeneging to get an understanding of. However there exist many resources online which can be used to better your understanding. From summaries of the algorithm along with Pseudo code ([Summary and Pseudo Code](http://practicalcryptography.com/hashes/md5-hash/)), to the offcial algorithm itself ([RFC-1321](https://datatracker.ietf.org/doc/rfc1321/?include_text=1)). The MD5 algorithm has many components that are used not only in the hashing process itself but in the padding process, there are also a number of constants that are used thoughout the program as well as other data types for storing the input. Every component of this program is used in either the padding process or the hashing process. Most of these components that are used in the hashing process which takes place **hashMD5** function such as the constants K and S (more on these later). However the input message itself is not stored as a static variable. It is store in a Union. The reason for this is because through out the program the message needs to be read in different types of int. Using a Union allows us to store the exact same data in memory in different data types. I will go into more detail about how Unions are used in this project later.
 
