@@ -116,6 +116,7 @@ is always called in unison with them, because of this the ROTL function is calle
 * The final parameter added to the operations is the padded message from the Union in its 32-bit integer type. The 32-bit integers from the union are stored in a 16 size array, this is perfect for the number of operations in each round of the hashing process.
 "W" is the diagram refers to the message.  
 ![MD5 Rounds](Images/MD5Algorithm2.png "MD5 hashing round diagram")
+* Once 64 operations are complete. The new hash values are then returned to the main function. from here they are printed the terminal using a hexidecimal format. 
 
 # Research
 
@@ -126,3 +127,17 @@ is always called in unison with them, because of this the ROTL function is calle
 * [SHA256 Padding](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf): Studied the padding from the SHA256 algorithm as it is the same that is used in the MD5 Algorithm.
 
 * [Another host of MD5 Algorithm](https://datatracker.ietf.org/doc/rfc1321/?include_text=1): Found this site to be identical to the offical RFC website, however it allowed me to view it in different formats.
+
+* [Cryptographic Hashing Functions](https://cs.indstate.edu/~fsagar/doc/paper.pdf): A paper I used to better understand the elements used in the MD5 algorithm, as well as understanding hashing in general and the elements(Constants) used in the algorithm.
+
+* [Rosetta Code](https://rosettacode.org/wiki/MD5#C): Used this site to better understand how to code the MD5 in *C* for myself, as wel as looking at how the different ways of doing the hashing process to how I eventually did it.
+
+* [iPXE](https://dox.ipxe.org/md5_8c_source.html): This source was used to corroborate what was in the previous source when it came to coding up the MD5 algorithm. I got the Idea to make the "S" bit shift amounts a 2D array from this source.
+
+* [Ordering bits](https://linux.die.net/man/3/htobe64): I used this site to better understand the ordering of bits in relation to *Big Endian and Little Endian*. Also used code example to convert the bit orders at the end of the padding process.
+
+* [MD5 Algorithm](https://en.wikipedia.org/wiki/MD5): I used the Wikipedia page because of it clear display of the MD5 pseudo code and its brief and simple description of the algorithm as a whole.
+
+* [Notes on MD5](http://www.cs.haifa.ac.il/~orrd/HashFuncSeminar/Lecture2.pdf): I used these notes early on when I wasn't sure how to approach the MD5 coding project, I decided to learn about MD5 before I attempt to use code. This source also provided some of the images used in this overview.
+
+* [Padding from SHA256](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf): I used the offcial SHA256 paper to learn and understand the padding process for MD5, as I mention in the padding section of this overiew they are identical. It was also helpful for learing about hashing algorithms because as part of this module we also built the SHA256 algorithm in labs[SHA Repo](https://github.com/aaronBurns59/SHA-256-Algorithm)
