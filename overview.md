@@ -14,17 +14,17 @@ The other important thing to keep in mind when learning to build a hashing algor
 
 ### How to set up
 
-- Go to [MSYS2 Website](https://www.msys2.org/), and click the download which is recommended for your system. (The website will tell you which one is recommended).
+Go to [MSYS2 Website](https://www.msys2.org/), and click the download which is recommended for your system. (The website will tell you which one is recommended).
 
-- Onces it's downloaded, follow the Windows installer process until it is finished. It will open a cmd window similar to the windows CMD console.
+Onces it's downloaded, follow the Windows installer process until it is finished. It will open a cmd window similar to the windows CMD console.
 
-- Then update pacman(A package managing enviroment) using the following line in the CMD. Pacman makes it very easy to manage the installation of packages including the gcc
+Then update pacman(A package managing enviroment) using the following line in the CMD. Pacman makes it very easy to manage the installation of packages including the gcc
 * pacman -Syu
 
-- Then install the gcc package by using the following line in the CMD
+Then install the gcc package by using the following line in the CMD
 * pacman -S base-deve1 gcc vim cmake
 
-- In order to use the *C compiler* in the standard windows console, you need to add the the following enviroment variables(Search this term in the windows search bar) to the PATh in windows 10.
+In order to use the *C compiler* in the standard windows console, you need to add the the following enviroment variables(Search this term in the windows search bar) to the PATh in windows 10.
 * C:\msys64\mingw64\bin
 * C:\msys64\usr\bin
 
