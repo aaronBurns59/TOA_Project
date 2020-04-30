@@ -70,6 +70,17 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 ![S Constants](Images/S.png "List of Constants S")
 
 ### Union
+* The Union which is called **BLOCK** is used to allocate a total of 64-bytes of memeory to the input message, but not as a single data type, unions can be used to store and access the same memory as different data types. In the case of this program the total 64-bytes is store as: 
+* 64 8-bit blocks: For Padding(the 0-bits and 1-sbit)
+* 8 64-bit blocks: For Padding(the last byte)
+* 16 32-bit blocks: For passing into and returning to/from the **hashMD5** function
+Diagram of how the union looks and operates in memory.  
+![Union BLOCK Diagram](Images/unionDiagram.png "Diagram of the Union")
+How the union looks in **Code**.  
+![Union Code](Images/unionCode.png "Code of the Union")
+
+* The union is used in the **Padding** to make sure that the message is padded to the correct length, The correct lenght being 448 % 512.
+* The padding process for MD5 works as follows. Every message has to be padded to the aforementioned length
 
 ## Auxillary Functions
 * There are 4 Auxillary functions used in (image here)
@@ -77,6 +88,7 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 ## Padding
 
 ## Hashing
+put the stuff about rounds in here
 
 # Complexity
 
