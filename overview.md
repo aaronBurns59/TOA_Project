@@ -67,7 +67,8 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 
 ### S 
 * S is a constant 2D array of ints that contains static values that are used in the bit shifting process (more on this later). These ints are used in the operations of the hasing process, the first row in the 2D array is used in the first round, and given that there are 16 operations per round the values in the columns are used 4 times each.
-![S Constants](Images/S.png "List of Constants S")
+![S Code](Images/S.png "List of Constants S in code")
+![S Constants](Images/S2.png "List of Constants S")
 
 ### Union
 * The Union which is called **BLOCK** is used to allocate a total of 64-bytes of memeory to the input message, but not as a single data type, unions can be used to store and access the same memory as different data types. In the case of this program the total 64-bytes is store as: 
@@ -112,7 +113,8 @@ is always called in unison with them, because of this the ROTL function is calle
 * The MD5 hashing process which takes place in the **hashMD5** function is a series of 64 **Operations** which are divided up into 4 **Rounds** of 16 operations each. Each round is differentiated by using a different **Auxillary Function**. 
 * Before the hashing operations begin, the initial hash values defined as A,B,C, and D are assigned to local variables which are then passed into the first operation, which begins the hash process. The function is not complete until these initial **registers** have been transformed into the correct hash output for what ever the message input was. 
 * The registers are not the only inputs to operations, the Constant "K's" values is used one to one with each operation, and a variable "s" which is used to access elements of the "S" constant which is used for the bit shifting function **ROTL**.
-* The final parameter added to the operations is the padded message from the Union in its 32-bit integer type. The 32-bit integers from the union are stored in a 16 size array, this is perfect for the number of operations in each round of the hashing process.  
+* The final parameter added to the operations is the padded message from the Union in its 32-bit integer type. The 32-bit integers from the union are stored in a 16 size array, this is perfect for the number of operations in each round of the hashing process.
+"W" is the diagram refers to the message.  
 ![MD5 Rounds](Images/MD5Algorithm2.png "MD5 hashing round diagram")
 
 # Research
