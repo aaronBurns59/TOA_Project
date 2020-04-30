@@ -100,6 +100,8 @@ How the union looks in **Code**.
 The Functions operate as such:  
 ![Auxillary Functions](Images/AuxFunction2.png "Auxillary functions layout")
 
+## Bit Shift Function
+
 
 
 ## Hashing
