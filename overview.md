@@ -92,7 +92,13 @@ How the union looks in **Code**.
 ![Padding](Images/padding.png "Image of how Padding should look")
 
 ## Auxillary Functions
-* There are 4 Auxillary functions used in (image here)
+* There are 4 Auxillary functions used in the MD5 algorithm. They are named F, G, H and I. Each of them are simple boolean return type functions that are used in each round of the hashing process.
+* The F Auxillary Function is used in the first round of 16 operations.
+* The G Auxillary Function is used in the second round of 16 operations.
+* The H Auxillary Function is used in the third round of 16 operations.
+* The I Auxillary Function is used in the final round of 16 operations.
+The Functions operate as such:  
+![Auxillary Functions](Images/AuxFunction2.png "Auxillary functions layout")
 
 
 
