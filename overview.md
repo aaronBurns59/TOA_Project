@@ -114,7 +114,7 @@ is always called in unison with them, This means the ROTL function is called in 
 * The final parameter added to the operations is the padded message from the Union in its 32-bit integer type. The 32-bit integers from the union are stored in a size 16 array, this matches perfectly with the number of operations in each round of the hashing process.
 "W" is the diagram refers to the message digest.  
 ![MD5 Rounds](Images/MD5Algorithm2.png "MD5 hashing round diagram")  
-* Once 64 operations are complete. The new hash values are then returned to the main function. from here they are printed the terminal using a hexidecimal format. 
+* Once 64 operations are complete. The new hash values are then returned to the main function. From here they are printed the terminal using a hexidecimal format. 
 
 # Research
 
