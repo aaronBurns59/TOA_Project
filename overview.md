@@ -115,7 +115,7 @@ is always called in unison with them, because of this the ROTL function is calle
 * The registers are not the only inputs to operations, the Constant "K's" values is used one to one with each operation, and a variable "s" which is used to access elements of the "S" constant which is used for the bit shifting function **ROTL**.
 * The final parameter added to the operations is the padded message from the Union in its 32-bit integer type. The 32-bit integers from the union are stored in a 16 size array, this is perfect for the number of operations in each round of the hashing process.
 "W" is the diagram refers to the message.  
-![MD5 Rounds](Images/MD5Algorithm2.png "MD5 hashing round diagram") | ![MD5 Rounds](Images/MD5Algorithm1.png "MD5 hashing round diagram")  
+![MD5 Rounds](Images/MD5Algorithm2.png "MD5 hashing round diagram")  
 * Once 64 operations are complete. The new hash values are then returned to the main function. from here they are printed the terminal using a hexidecimal format. 
 
 # Research
