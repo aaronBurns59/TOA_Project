@@ -75,7 +75,7 @@ The MD5 algorithm itself is very complex and challeneging to get an understandin
 * 8 64-bit blocks: For Padding(the last byte)
 * 16 32-bit blocks: For passing into and returning to/from the **hashMD5** function
 Diagram of how the union looks and operates in memory.  
-![Union BLOCK Diagram](Images/unionDiagram.png "Diagram of the Union")
+![Union BLOCK Diagram](Images/unionDiagram.jpg "Diagram of the Union")
 How the union looks in **Code**.  
 ![Union Code](Images/unionCode.png "Code of the Union")
 
