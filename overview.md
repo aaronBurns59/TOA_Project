@@ -10,7 +10,7 @@ The other important thing to keep in mind when learning to build a hashing algor
 
 # Run
 
-## On Windows
+## On Windows(10)
 
 ### How to set up
 
@@ -24,11 +24,15 @@ The other important thing to keep in mind when learning to build a hashing algor
 - Then install the gcc package by using the following line in the CMD
 * pacman -S base-deve1 gcc vim cmake
 
+- In order to use the *C compiler* in the standard windows console, you need to add the the following enviroment variables(Search this term in the windows search bar) to the PATh in windows 10.
+* C:\msys64\mingw64\bin
+* C:\msys64\usr\bin
+
 ### CMD to Compile and Run
 
 - gcc -o md5 MD5.c
 
-- md5.exe
+- md5
 
 ## On Linux(Project built on)
 
