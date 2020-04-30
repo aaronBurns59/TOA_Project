@@ -88,6 +88,7 @@ How the union looks in **Code**.
     2. Then append as many **0-bits** as are needed to *ensure the message is congruent to 448 % 512*.
     3. A 64-bit representation of the length of original message is then appended.
 * At the end of the padding process the message will look like the original message in bits + 1-bit + n 0-bits + A 64-bit block of the length of the message before pre padding. And it will match the size requirement needed for the MD5 algorithm.(*An example of how it may look is in the Padding Section of the* **README**)
+* 'a', 'b', and 'c' are the original message in bits, then 1-bit followed by the 0-bits and finally the 64-bit Block of the lenght of the oringal message in bits.
 ![Padding](Images/padding.png "Image of how Padding should look")
 
 ## Auxillary Functions
