@@ -12,6 +12,9 @@
 ### test.txt 
 * A text file that can be read in by the MD5.c program to test if it hashes properly
 
+### overview.md
+* A markdown file that takes in more depth about the MD5 Algorithm as a whole and how the project was approached and built. 
+
 ## Message Digest 5 (MD5) Hash Algorithm
 
 ### Input

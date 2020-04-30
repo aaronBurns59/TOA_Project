@@ -51,7 +51,7 @@ const int S[4][4]= {
     {6,10,15,21}
 };
 
-// 64 bytes of memeory that can be accessed in different types:
+// 64 bytes of memory that can be accessed in different types:
 // 64 8-bit blocks
 // 8 64-bit blocks
 // 16 32-bit blocks

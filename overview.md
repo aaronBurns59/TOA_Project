@@ -91,6 +91,9 @@ How the union looks in **Code**.
 * 'a', 'b', and 'c' are the original message in bits, then 1-bit followed by the 0-bits and finally the 64-bit Block of the lenght of the oringal message in bits.  
 ![Padding](Images/padding.png "Image of how Padding should look")
 
+## Enum
+* The PADDING enum is used to check what stage of the padding process is in. This is done to check if the what needed to be padded is the 1-bit, the 0-bit or the final 64-bits
+
 ## Auxillary Functions
 * There are 4 Auxillary functions used in the MD5 algorithm. They are named F, G, H and I. Each of them are simple boolean return type functions that are used in each round of the hashing process.
 * The F Auxillary Function is used in the first round of 16 operations.
@@ -101,18 +104,23 @@ The Functions operate as such:
 ![Auxillary Functions](Images/AuxFunctions2.png "Auxillary functions layout")
 
 ## Bit Shift Function
-
-
+* The **ROTL**(Rotate Left) function is left bit shifting function that is coupled with every calling each Auxillary function. It is used to further manipulate the hash output even further then just using the Auxillary Functions alone.
+* When each **Auxillary Function** regardless of which round the hashing process is in, The ROTL
+is always called in unison with them, because of this the ROTL function is called in every operation of the hashing process.
 
 ## Hashing
-put the stuff about rounds in here
-
-# Complexity
+* The MD5 hashing process which takes place in the **hashMD5** function is a series of 64 **Operations** which are divided up into 4 **Rounds** of 16 operations each. Each round is differentiated by using a different **Auxillary Function**. 
+* Before the hashing operations begin, the initial hash values defined as A,B,C, and D are assigned to local variables which are then passed into the first operation, which begins the hash process. The function is not complete until these initial **registers** have been transformed into the correct hash output for what ever the message input was. 
+* The registers are not the only inputs to operations, the Constant "K's" values is used one to one with each operation, and a variable "s" which is used to access elements of the "S" constant which is used for the bit shifting function **ROTL**.
+* The final parameter added to the operations is the padded message from the Union in its 32-bit integer type. The 32-bit integers from the union are stored in a 16 size array, this is perfect for the number of operations in each round of the hashing process.  
+![MD5 Rounds](Images/MD5Algorithm2.png "MD5 hashing round diagram")
 
 # Research
 
-* [gcc for Windows](https://youtu.be/0Z4Xga_7gp0): Video used for installing *C Compiler* for Windows 
+* [gcc for Windows](https://youtu.be/0Z4Xga_7gp0): Video used for installing *C Compiler* for Windows.
 
 * [Practical Cryptography](http://practicalcryptography.com/hashes/md5-hash/): Practical Cryptography website used for learning about the broad aspects of MD5 algorithm and used its built in MD5 calculator for verification of hash outputs.
 
-* [SHA256 Padding](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf): Studied the padding from the SHA256 algorithm as it is the same that is used in the MD5 Algorithm
+* [SHA256 Padding](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf): Studied the padding from the SHA256 algorithm as it is the same that is used in the MD5 Algorithm.
+
+* [Another host of MD5 Algorithm](https://datatracker.ietf.org/doc/rfc1321/?include_text=1): Found this site to be identical to the offical RFC website, however it allowed me to view it in different formats.
